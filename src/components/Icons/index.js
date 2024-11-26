@@ -1,0 +1,11 @@
+export { default as BuildingIcon } from './BuildingIcon';
+export { default as CheckMarkCircleLineIcon } from './CheckMarkCircleLineIcon';
+export { default as CloseRoundLineIcon } from './CloseRoundLineIcon';
+export { default as DescriptionIcon } from './DescriptionIcon';
+export { default as DocumentsSearchIcon } from './DocumentsSearchIcon';
+export { default as EditDocumentIcon } from './EditDocumentIcon';
+export { default as ExclamationWarningRoundIcon } from './ExclamationWarningRoundIcon';
+export { default as FileDownloadIcon } from './FileDownloadIcon';
+export { default as InfoCircleLineIcon } from './InfoCircleLineIcon';
+export { default as RecycleBinLineIcon } from './RecycleBinLineIcon';
+export { default as SearchLineIcon } from './SearchLineIcon';
