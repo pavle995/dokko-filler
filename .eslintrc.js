@@ -2,7 +2,13 @@ module.exports = {
   settings: {
     'import/resolver': {
       alias: {
-        map: [['~components', './src/components']],
+        map: [
+          ['~components', './src/components'],
+          ['~shared-components', './src/shared-components'],
+          ['~pages', './src/pages'],
+          ['~hooks', './src/hooks'],
+          ['~api', './src/api'],
+        ],
         extensions: ['.js', '.jsx', '.json'],
       },
     },

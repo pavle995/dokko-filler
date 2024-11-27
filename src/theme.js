@@ -19,7 +19,7 @@ const tokens = (mode) => ({
           },
           primary: {
             light: '#a1a4ab',
-            main: '#141b2d',
+            main: '#336699',
             dark: '#101624',
             contrastText: '#ffffff',
           },
@@ -38,6 +38,7 @@ const tokens = (mode) => ({
           background: {
             default: '#141b2d',
             paper: '#1F2A40',
+            white: '#fff',
           },
         },
       }
@@ -57,7 +58,7 @@ const tokens = (mode) => ({
           },
           primary: {
             light: '#f2f0f0',
-            main: '#141b2d',
+            main: '#336699',
             dark: '#080b12',
             contrastText: '#ffffff',
           },
@@ -76,6 +77,7 @@ const tokens = (mode) => ({
           background: {
             default: '#ffffff',
             paper: '#f2f0f0',
+            white: '#fff',
           },
         },
       }),

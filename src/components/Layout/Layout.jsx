@@ -6,27 +6,30 @@ import Sidebar from '~components/Sidebar/Sidebar';
 
 const FlexContainer = styled.div`
   display: flex;
-  // gap: 2%;
-  flex-wrap: wrap;
-  align-content: start;
-  height: -webkit-fill-available;
-  // margin: 0px 32px;
+  flex-direction: column;
+  height: 100vh;
 `;
 
 const Content = styled.div`
   flex-grow: 1;
-  height: 90%;
+  padding: 16px;
+  overflow-y: auto;
+`;
+
+const MainContent = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex: 1;
+  overflow: hidden;
 `;
 
 function Layout({ children }) {
   return (
     <FlexContainer>
       <Header />
-      <Sidebar />
-      <Content>{children}</Content>
+      <MainContent>
+        <Sidebar />
+        <Content>{children}</Content>
+      </MainContent>
       <Footer />
     </FlexContainer>
   );

@@ -16,6 +16,13 @@ module.exports = (env) => {
     resolve: {
       alias: {
         '~components': path.resolve(__dirname, './src/components'),
+        '~shared-components': path.resolve(
+          __dirname,
+          './src/shared-components'
+        ),
+        '~pages': path.resolve(__dirname, './src/pages'),
+        '~hooks': path.resolve(__dirname, './src/hooks'),
+        '~api': path.resolve(__dirname, './src/api'),
       },
       extensions: ['.js', '.jsx', '.json'],
     },
