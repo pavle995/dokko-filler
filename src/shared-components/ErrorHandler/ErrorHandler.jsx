@@ -4,11 +4,11 @@ import { TextDocumentRemoveIcon } from '~components/Icons';
 
 const ErrorContainer = styled.div`
   display: flex;
-  flex-direction: raw;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 16px;
+  gap: 12px;
   padding: 24px;
   color: ${({ theme }) => theme.palette.grey[700]};
   border-radius: 8px;

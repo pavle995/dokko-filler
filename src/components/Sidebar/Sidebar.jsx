@@ -9,7 +9,7 @@ const SidebarContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: #f5f5f5;
+  background-color:  ${({ theme }) => theme.palette.lightGrey[700]};
   box-sizing: border-box;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -24,12 +24,17 @@ const StyledList = styled.div`
 function Sidebar() {
   const navigationItems = [
     {
-      label: 'Dokumenti',
-      icon: 'DescriptionIcon',
+      label: 'Početna',
+      icon: 'HouseIcon',
       route: '/',
     },
     {
-      label: 'O aplikaciji',
+      label: 'Ugovori',
+      icon: 'DescriptionIcon',
+      route: '/documents',
+    },
+    {
+      label: 'O platformi',
       icon: 'BuildingIcon',
       route: '/about',
     },

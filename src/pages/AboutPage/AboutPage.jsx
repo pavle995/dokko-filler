@@ -1,19 +1,30 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { InfoCircleLineIcon } from '~components/Icons';
+
+const pulseAnimation = keyframes`
+  0% {
+    transform: scale(0.8);
+  }
+ 
+  100% {
+    transform: scale(1);
+  }
+`;
 
 const AboutPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   text-align: center;
   gap: 24px;
   padding: 24px;
   max-width: 800px;
   margin: 0 auto;
-  height: 100vh;
+  height: 100%;
   color: ${({ theme }) => theme.palette.text.primary};
+  animation: ${pulseAnimation} 1.5s ease-in-out forwards;
 `;
 
 const TitleContainer = styled.div`

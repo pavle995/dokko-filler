@@ -17,6 +17,17 @@ const tokens = (mode) => ({
             800: '#292929',
             900: '#141414',
           },
+          lightGrey: {
+            100: '#f9f9f9',
+            200: '#f0f0f0',
+            300: '#e6e6e6',
+            400: '#dcdcdc',
+            500: '#d3d3d3',
+            600: '#c9c9c9',
+            700: '#bfbfbf',
+            800: '#b5b5b5',
+            900: '#ababab',
+          },
           primary: {
             light: '#a1a4ab',
             main: '#336699',
@@ -56,6 +67,18 @@ const tokens = (mode) => ({
             800: '#c2c2c2',
             900: '#e0e0e0',
           },
+          lightGrey: {
+            100: '#bbbbbb',
+            200: '#c3c3c3',
+            300: '#cccccc',
+            400: '#d4d4d4',
+            500: '#dddddd',
+            600: '#e5e5e5',
+            700: '#eeeeee',
+            800: '#f7f7f7',
+            900: '#ffffff',
+          },
+
           primary: {
             light: '#f2f0f0',
             main: '#336699',

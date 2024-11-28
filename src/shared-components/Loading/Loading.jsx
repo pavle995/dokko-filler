@@ -7,7 +7,7 @@ const pulseAnimation = keyframes`
     transform: scale(1);
   }
   50% {
-    transform: scale(1.2); /* Slight increase */
+    transform: scale(1.2);
   }
   100% {
     transform: scale(1);
@@ -33,10 +33,10 @@ const AnimatedIcon = styled(ActivityLogIcon)`
   fill: ${({ theme }) => theme.palette.grey[700]};
 `;
 
-function Loading() {
+function Loading({ text = 'Učitavanje' }) {
   return (
     <LoadingContainer>
-      Učitavanje
+      {text}
       <AnimatedIcon />
     </LoadingContainer>
   );

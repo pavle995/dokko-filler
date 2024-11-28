@@ -56,7 +56,7 @@ function DocumentItem({ name, navigateTo }) {
       <CardContentWrapper>
         <StyledTypography component="div">{name}</StyledTypography>
         <StyledButton variant="contained" onClick={() => navigate(navigateTo)}>
-          Napravi dokument
+          Napravi Ugovor
         </StyledButton>
       </CardContentWrapper>
     </StyledCard>

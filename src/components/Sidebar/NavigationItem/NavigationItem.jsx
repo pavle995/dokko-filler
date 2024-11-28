@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { DescriptionIcon, BuildingIcon } from '~components/Icons';
+import { DescriptionIcon, BuildingIcon, HouseIcon } from '~components/Icons';
 
 const StyledListItemLink = styled(NavLink)`
   display: flex;
@@ -19,7 +19,7 @@ const StyledListItemLink = styled(NavLink)`
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.palette.grey[900]};
+    background-color: ${({ theme }) => theme.palette.grey[800]};
     cursor: pointer;
   }
 `;
@@ -45,6 +45,7 @@ function NavigationItem({ label, icon, route }) {
   const icons = {
     DescriptionIcon: <DescriptionIcon />,
     BuildingIcon: <BuildingIcon />,
+    HouseIcon: <HouseIcon />,
   };
 
   return (
