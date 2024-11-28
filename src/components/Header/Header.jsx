@@ -9,7 +9,6 @@ const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.palette.businessBlue.light};
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 0 20px;
 `;
 

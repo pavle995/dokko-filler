@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import DocumentItem from '~shared-components/DocumentItem/DocumentItem';
-import { DescriptionIcon, EditDocumentIcon } from '~components/Icons';
 import useFetch from '~hooks/useFetch';
 import getDocuments from '~api/getDocuments';
+import { useNotification } from '~context/NotificationContext';
+import Loading from '~shared-components/Loading/Loading';
+import ErrorHandler from '~shared-components/ErrorHandler/ErrorHandler';
 
 const DocumentsContainer = styled.div`
   display: flex;
@@ -12,18 +14,12 @@ const DocumentsContainer = styled.div`
   gap: 16px;
 `;
 
-const ErrorMessage = styled.div`
-  color: red;
-  font-size: 1rem;
-  margin: 16px;
+const StateContainerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `;
-
-const Loader = styled.div`
-  font-size: 1.5rem;
-  color: ${({ theme }) => theme.palette.grey[600]};
-  margin: 16px;
-`;
-
 const mockedDocuments = [
   {
     doc_id: 'mock-14343',
@@ -54,20 +50,47 @@ const mockedDocuments = [
 
 function DocumentsList() {
   const { data: documents, loading, error } = useFetch(getDocuments);
+  const showNotification = useNotification();
   const documentsToRender = error || !documents ? mockedDocuments : documents;
 
-  if (loading) return <Loader>Loading documents...</Loader>;
-  // if (error) return <ErrorMessage>Error: {error.message}</ErrorMessage>;
+  useEffect(() => {
+    if (error) {
+      showNotification(
+        'Neuspešno učitavanje dokumentata. Molimo vas pokušajte opet.',
+        3000,
+        'error'
+      );
+    }
+  }, [error]);
+
+  if (documents?.length === 0)
+    return (
+      <StateContainerWrapper>
+        <ErrorHandler message="Lista dokumenata je prazna."></ErrorHandler>
+      </StateContainerWrapper>
+    );
+
+  if (loading)
+    return (
+      <StateContainerWrapper>
+        <Loading />
+      </StateContainerWrapper>
+    );
+
+  if (error)
+    return (
+      <StateContainerWrapper>
+        <ErrorHandler message="Neuspešno učitavanje liste."></ErrorHandler>
+      </StateContainerWrapper>
+    );
 
   return (
     <DocumentsContainer>
-      {documentsToRender.map((doc) => (
+      {documents.map((doc) => (
         <DocumentItem
           key={doc.doc_id}
           name={doc.name}
           navigateTo={`/create/${doc.doc_id}`}
-          icon={DescriptionIcon}
-          buttonIcon={EditDocumentIcon}
         />
       ))}
     </DocumentsContainer>

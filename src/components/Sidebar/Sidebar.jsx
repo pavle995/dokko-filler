@@ -10,11 +10,9 @@ const SidebarContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   background-color: #f5f5f5;
-  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   padding-top: 16px;
   padding-bottom: 16px;
-
 `;
 
 const StyledList = styled.div`
@@ -29,6 +27,11 @@ function Sidebar() {
       label: 'Dokumenti',
       icon: 'DescriptionIcon',
       route: '/',
+    },
+    {
+      label: 'O aplikaciji',
+      icon: 'BuildingIcon',
+      route: '/about',
     },
   ];
 

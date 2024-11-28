@@ -1,5 +1,7 @@
+export { default as ActivityLogIcon } from './ActivityLogIcon';
 export { default as BuildingIcon } from './BuildingIcon';
 export { default as CheckMarkCircleLineIcon } from './CheckMarkCircleLineIcon';
+export { default as CloseLineIcon } from './CloseLineIcon';
 export { default as CloseRoundLineIcon } from './CloseRoundLineIcon';
 export { default as DescriptionIcon } from './DescriptionIcon';
 export { default as DocumentsSearchIcon } from './DocumentsSearchIcon';
@@ -10,3 +12,5 @@ export { default as FileLineIcon } from './FileLineIcon';
 export { default as InfoCircleLineIcon } from './InfoCircleLineIcon';
 export { default as RecycleBinLineIcon } from './RecycleBinLineIcon';
 export { default as SearchLineIcon } from './SearchLineIcon';
+export { default as TextDocumentRemoveIcon } from './TextDocumentRemoveIcon';
+export { default as WebPageSourceCodeIcon } from './WebPageSourceCodeIcon';

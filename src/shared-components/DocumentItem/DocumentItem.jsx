@@ -15,6 +15,9 @@ const IconContainer = styled.div`
 const StyledCard = styled(Card)`
   width: 300px;
   border: 1px solid ${({ theme }) => theme.palette.grey[900]};
+  &.MuiCard-root {
+    box-shadow: none;
+  }
 `;
 
 const StyledButton = styled(Button)`

@@ -8,6 +8,7 @@ module.exports = {
           ['~pages', './src/pages'],
           ['~hooks', './src/hooks'],
           ['~api', './src/api'],
+          ['~context', './src/context'],
         ],
         extensions: ['.js', '.jsx', '.json'],
       },

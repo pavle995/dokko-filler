@@ -9,6 +9,7 @@
       "~pages/*": ["pages/*"],
       "~hooks/*": ["hooks/*"],
       "~api/*": ["api/*"],
+      "~context/*": ["context/*"]
     }
   },
   "exclude": ["node_modules", "**/node_modules/*"]

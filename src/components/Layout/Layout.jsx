@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Header from '~components/Header/Header';
 import Footer from '~components/Footer/Footer';
 import Sidebar from '~components/Sidebar/Sidebar';
+import { NotificationProvider } from '~context/NotificationContext';
 
 const FlexContainer = styled.div`
   display: flex;
@@ -28,7 +29,9 @@ function Layout({ children }) {
       <Header />
       <MainContent>
         <Sidebar />
-        <Content>{children}</Content>
+        <NotificationProvider>
+          <Content>{children}</Content>
+        </NotificationProvider>
       </MainContent>
       <Footer />
     </FlexContainer>

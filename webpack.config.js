@@ -23,6 +23,7 @@ module.exports = (env) => {
         '~pages': path.resolve(__dirname, './src/pages'),
         '~hooks': path.resolve(__dirname, './src/hooks'),
         '~api': path.resolve(__dirname, './src/api'),
+        '~context': path.resolve(__dirname, './src/context'),
       },
       extensions: ['.js', '.jsx', '.json'],
     },
