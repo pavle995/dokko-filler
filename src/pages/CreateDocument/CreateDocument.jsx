@@ -57,82 +57,13 @@ const StateContainerWrapper = styled.div`
   height: 100%;
 `;
 
-// const mockCard = {
-//   DocumentNumber: '0068',
-//   DocumentType: 'ID',
-//   Surname: 'STANKOVIĆ',
-//   GivenName: 'PETAR',
-//   Sex: 'M',
-//   PlaceOfBirth: 'BEOGRAD',
-//   DateOfBirth: '01.07.1991.',
-//   Street: 'BULEVAR KRALJA ALEKSANDRA',
-//   AddressNumber: '320',
-//   Place: 'BEOGRAD',
-//   PersonalNumber: '0107',
-// };
-
-const needed_cards = [
-  {
-    name: 'Licna Karta Prodavac',
-    type: 'licna_karta',
-    fields: [
-      'name',
-      'PersonalNumber',
-      'Place',
-      'Street',
-      'AddressNumber',
-      'IssuingAuthority',
-      'DocumentNumber',
-    ],
-    order: 1,
-  },
-  {
-    name: 'Licna Karta Kupac',
-    type: 'licna_karta',
-    fields: [
-      'name',
-      'PersonalNumber',
-      'Place',
-      'Street',
-      'AddressNumber',
-      'IssuingAuthority',
-      'DocumentNumber',
-    ],
-    order: 2,
-  },
-  {
-    name: 'Saobracajna dozvola',
-    type: 'saobracajna_dozvola',
-    fields: [
-      'VehicleMake',
-      'CommercialDescription',
-      'VehicleType',
-      'VehicleIdNumber',
-      'EngineIdNumber',
-      'YearOfProduction',
-      'MaximumNetPower',
-      'EngineCapacity',
-      'MaximumPermissibleLadenMass',
-      'NumberOfSeats',
-      'ColourOfVehicle',
-      'RegistrationNumberOfVehicle',
-    ],
-    order: 3,
-  },
-];
-
 function CreateDocument() {
   const { id } = useParams();
+  const { name } = useParams();
   const showNotification = useNotification();
   const fetchDocument = useCallback(() => getDocumentById(id), [id]);
   const removeSpaces = (str) => str.replace(/\s+/g, '');
   const [currentCardName, setCurrentCardName] = useState(null);
-
-  const [cardsData, setCardsData] = useState(
-    Object.fromEntries(
-      needed_cards?.map((card) => [removeSpaces(card.name), null])
-    )
-  );
 
   const [
     runFetchCard,
@@ -150,13 +81,22 @@ function CreateDocument() {
     error: fetchDocumentError,
   } = useFetch(fetchDocument);
 
+  const [cardsData, setCardsData] = useState(
+    Object.fromEntries(
+      (document?.body?.needed_cards || []).map((card) => [
+        removeSpaces(card.name),
+        null,
+      ])
+    )
+  );
+
   const filteredCards = useMemo(() => {
-    return needed_cards
+    return document?.body?.needed_cards
       ?.map((requiredCard) =>
         cardsConfig?.find((card) => card.name === requiredCard.name)
       )
       .filter(Boolean);
-  }, [needed_cards, cardsConfig]);
+  }, [document, cardsConfig]);
 
   useEffect(() => {
     if (cardError && currentCardName) {
@@ -199,12 +139,12 @@ function CreateDocument() {
     }));
   };
 
-  // if (fetchDocumentError)
-  //   return (
-  //     <StateContainerWrapper>
-  //       <ErrorHandler message={'Neuspešno učitavanje ugovora.'}></ErrorHandler>
-  //     </StateContainerWrapper>
-  //   );
+  if (fetchDocumentError)
+    return (
+      <StateContainerWrapper>
+        <ErrorHandler message={'Neuspešno učitavanje ugovora.'}></ErrorHandler>
+      </StateContainerWrapper>
+    );
 
   if (documentLoading)
     return (
@@ -215,7 +155,7 @@ function CreateDocument() {
 
   return (
     <CreateContainer>
-      <Title>Kreiranje dokumenta {id}</Title>
+      <Title>{name}</Title>
 
       <SubTitle>Neophodna dokumenta</SubTitle>
       <PlaceholderContainer>
@@ -228,6 +168,7 @@ function CreateDocument() {
             onRemove={() => handleRemove(card.name)}
             text={card.text}
             loading={fetchCardLoading}
+            dataData={cardsData}
           />
         ))}
       </PlaceholderContainer>

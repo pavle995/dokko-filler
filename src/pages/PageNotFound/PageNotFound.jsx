@@ -50,7 +50,7 @@ function PageNotFound() {
       <StyledIcon />
       <Title>Stranica nije pronađena</Title>
       <StyledButton variant="contained" onClick={() => navigate('/')}>
-        Idi na Dokumenta
+        Idi na Poačetak
       </StyledButton>
     </NotFoundContainer>
   );

@@ -4,7 +4,16 @@ import IDCard from '~shared-components/IDCard/IDCard';
 import VehicleCardID from '~shared-components/VehicleCardID/VehicleCardID';
 import { IdProofLineIcon, CarDocumentIcon } from '~components/Icons';
 
-const DocumentRenderer = ({ type, data, onClick, text, onRemove, loading }) => {
+const DocumentRenderer = ({
+  type,
+  data,
+  onClick,
+  text,
+  onRemove,
+  loading,
+  dataData,
+}) => {
+  // console.log(dataData);
   if (!data) {
     return (
       <PlaceholderCard

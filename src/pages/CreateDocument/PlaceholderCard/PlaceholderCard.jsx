@@ -24,13 +24,8 @@ const CardContainer = styled.div`
 `;
 
 const IconContainer = styled.div`
-
-  width: 50px;
-  height: 50px;
-
   & > svg {
-    width: 100%;
-    height: 100%;
+    height: 50px;
     fill: ${({ theme }) => theme.palette.grey[400]};
   }
 `;

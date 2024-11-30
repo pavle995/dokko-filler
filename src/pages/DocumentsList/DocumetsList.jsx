@@ -7,16 +7,6 @@ import { useNotification } from '~context/NotificationContext';
 import Loading from '~shared-components/Loading/Loading';
 import ErrorHandler from '~shared-components/ErrorHandler/ErrorHandler';
 
-const pulseAnimation = keyframes`
-  0% {
-    transform: scale(0.9);
-  }
- 
-  100% {
-    transform: scale(1);
-  }
-`;
-
 const DocumentsContainer = styled.div`
   padding: 20px;
 `;
@@ -26,8 +16,7 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
   justify-content: start;
   gap: 16px;
-  // animation: ${pulseAnimation} 0.5s linear;
-  margin-top: 16px;
+  margin-top: 32px;
 `;
 
 const Title = styled.h1`
@@ -46,38 +35,10 @@ const StateContainerWrapper = styled.div`
   justify-content: center;
   height: 100%;
 `;
-const mockedDocuments = [
-  {
-    doc_id: 'mock-14343',
-    name: 'Mokovani Ugovor 1',
-    document_url_pdf: '/mock-url-1.pdf',
-  },
-  {
-    doc_id: 'mock-1322',
-    name: 'Mokovani Ugovor 2fsdf',
-    document_url_pdf: '/mock-url-2.pdf',
-  },
-  {
-    doc_id: 'mock-12312',
-    name: 'Mokovani Ugovor 2dfgdf',
-    document_url_pdf: '/mock-url-2.pdf',
-  },
-  {
-    doc_id: 'mock-342',
-    name: 'Mokovani Ugovor 2213',
-    document_url_pdf: '/mock-url-2.pdf',
-  },
-  {
-    doc_id: 'mock-665',
-    name: 'Mokovani Ugovor 231231',
-    document_url_pdf: '/mock-url-2.pdf',
-  },
-];
 
 function DocumentsList() {
   const { data: documents, loading, error } = useFetch(getDocuments);
   const showNotification = useNotification();
-  const documentsToRender = error || !documents ? mockedDocuments : documents;
 
   useEffect(() => {
     if (error) {
@@ -103,22 +64,22 @@ function DocumentsList() {
       </StateContainerWrapper>
     );
 
-  // if (error)
-  //   return (
-  //     <StateContainerWrapper>
-  //       <ErrorHandler message="Neuspešno učitavanje liste ugovora."></ErrorHandler>
-  //     </StateContainerWrapper>
-  //   );
+  if (error)
+    return (
+      <StateContainerWrapper>
+        <ErrorHandler message="Neuspešno učitavanje liste ugovora."></ErrorHandler>
+      </StateContainerWrapper>
+    );
 
   return (
     <DocumentsContainer>
       <Title>Ugovori</Title>
       <Wrapper>
-        {documentsToRender.map((doc) => (
+        {documents.body?.map((doc) => (
           <DocumentItem
-            key={doc.doc_id}
+            key={doc.id}
             name={doc.name}
-            navigateTo={`create/${doc.doc_id}`}
+            navigateTo={`create/${doc.name}/${doc.id}`}
           />
         ))}
       </Wrapper>

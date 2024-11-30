@@ -14,7 +14,10 @@ function Root() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/documents" element={<DocumentsList />} />
-          <Route path="/documents/create/:id" element={<CreateDocument />} />
+          <Route
+            path="/documents/create/:name/:id"
+            element={<CreateDocument />}
+          />
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
