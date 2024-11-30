@@ -2,9 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { YoungBusinessmanIcon } from '~components/Icons';
 import { BusinessWomanWithTieIcon } from '~components/Icons';
+import { RecycleBinIcon } from '~components/Icons';
+import IconButton from '@mui/material/IconButton';
 
 const CardContainer = styled.div`
   width: 400px;
+  // max-height: 450px;
+  height: 100%;
   padding: 20px;
   border-radius: 4px;
   background-color: ${({ theme }) => theme.palette.lightGrey[700]};
@@ -59,7 +63,31 @@ const AddressContainer = styled.div`
   font-size: 0.9rem;
 `;
 
-function IDCard({ data }) {
+const DeleteIcon = styled.div`
+  cursor: pointer;
+
+  & > svg {
+    width: 24px;
+    height: 24px;
+    fill: ${({ theme }) => theme.palette.error.main};
+
+    &:hover {
+      fill: ${({ theme }) => theme.palette.error.dark};
+    }
+  }
+`;
+
+const StyledIconButton = styled(IconButton)`
+  position: relative;
+  top: -32px;
+  right: -16px;
+  color: ${({ theme }) => theme.palette.error.main};
+  &:hover {
+    color: ${({ theme }) => theme.palette.error.dark};
+  }
+`;
+
+function IDCard({ data, onRemove }) {
   const isMale = data.Sex === 'M';
 
   return (
@@ -69,6 +97,11 @@ function IDCard({ data }) {
           {isMale ? <YoungBusinessmanIcon /> : <BusinessWomanWithTieIcon />}
         </ProfileIcon>
         <DocumentType>{data.DocumentType}</DocumentType>
+        <StyledIconButton onClick={onRemove} aria-label="Delete">
+          <DeleteIcon>
+            <RecycleBinIcon />
+          </DeleteIcon>
+        </StyledIconButton>
       </Header>
       <InfoRow>
         <InfoLabel>Broj licne karte:</InfoLabel>

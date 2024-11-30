@@ -82,7 +82,7 @@ function DocumentsList() {
   useEffect(() => {
     if (error) {
       showNotification(
-        'Neuspešno učitavanje dokumentata. Molimo vas pokušajte opet.',
+        'Neuspešno učitavanje liste dokumenata. Molimo vas pokušajte opet.',
         5000,
         'error'
       );
@@ -106,7 +106,7 @@ function DocumentsList() {
   // if (error)
   //   return (
   //     <StateContainerWrapper>
-  //       <ErrorHandler message="Neuspešno učitavanje ugovora."></ErrorHandler>
+  //       <ErrorHandler message="Neuspešno učitavanje liste ugovora."></ErrorHandler>
   //     </StateContainerWrapper>
   //   );
 

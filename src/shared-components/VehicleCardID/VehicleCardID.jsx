@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { CarDocumentIcon } from '~components/Icons';
+import { RecycleBinIcon } from '~components/Icons';
+import IconButton from '@mui/material/IconButton';
 
 const CardContainer = styled.div`
   width: 400px;
@@ -51,14 +53,72 @@ const InfoLabel = styled.div`
   color: ${({ theme }) => theme.palette.text.secondary};
 `;
 
+const InfoValue = styled.div`
+  color: ${({ theme }) => theme.palette.text.primary};
+`;
+
 const VehicleDetailsContainer = styled.div`
   background-color: ${({ theme }) => theme.palette.grey[900]};
   padding: 12px;
   border-radius: 8px;
   font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
-function VehicleCardID({ data }) {
+const OwnerRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: ${({ theme }) => theme.palette.text.primary};
+`;
+
+const OwnerInfo = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const OwnerName = styled.span`
+  font-weight: bold;
+  color: ${({ theme }) => theme.palette.text.secondary};
+`;
+
+const OwnerDetail = styled.span`
+  font-weight: bold;
+  color: ${({ theme }) => theme.palette.text.secondary};
+`;
+
+const OwnerAddress = styled.div`
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.palette.text.primary};
+`;
+
+const DeleteIcon = styled.div`
+  cursor: pointer;
+
+  & > svg {
+    width: 24px;
+    height: 24px;
+    fill: ${({ theme }) => theme.palette.error.main};
+
+    &:hover {
+      fill: ${({ theme }) => theme.palette.error.dark};
+    }
+  }
+`;
+
+const StyledIconButton = styled(IconButton)`
+  position: relative;
+  top: -32px;
+  right: -16px;
+  color: ${({ theme }) => theme.palette.error.main};
+  &:hover {
+    color: ${({ theme }) => theme.palette.error.dark};
+  }
+`;
+
+function VehicleCardID({ data, onRemove }) {
   return (
     <CardContainer>
       <Header>
@@ -66,36 +126,48 @@ function VehicleCardID({ data }) {
           <CarDocumentIcon />
         </ProfileIcon>
         <DocumentType>Saobraćajna dozvola</DocumentType>
+        <StyledIconButton onClick={onRemove} aria-label="Delete">
+          <DeleteIcon>
+            <RecycleBinIcon />
+          </DeleteIcon>
+        </StyledIconButton>
       </Header>
       <InfoRow>
         <InfoLabel>Broj registracije:</InfoLabel>
-        <div>{data.RegistrationNumber}</div>
+        <InfoValue>{data.RegistrationNumberOfVehicle || 'N/A'}</InfoValue>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Tip vozila:</InfoLabel>
-        <div>{data.VehicleType}</div>
+        <InfoValue>{data.VehicleCategory || 'N/A'}</InfoValue>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Proizvođač:</InfoLabel>
-        <div>{data.Manufacturer}</div>
+        <InfoValue>{data.VehicleMake || 'N/A'}</InfoValue>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Model:</InfoLabel>
-        <div>{data.Model}</div>
+        <InfoValue>{data.CommercialDescription || 'N/A'}</InfoValue>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Godina proizvodnje:</InfoLabel>
-        <div>{data.YearOfManufacture}</div>
+        <InfoValue>{data.YearOfProduction || 'N/A'}</InfoValue>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Zapremina motora:</InfoLabel>
-        <div>{data.EngineCapacity}</div>
+        <InfoValue>{data.EngineCapacity || 'N/A'}</InfoValue>
       </InfoRow>
       <VehicleDetailsContainer>
-        <InfoLabel>Vlasnik:</InfoLabel>
-        <div>{data.Owner}</div>
-        <InfoLabel>Adresa:</InfoLabel>
-        <div>{data.Address}</div>
+        <OwnerRow>
+          <InfoLabel>Vlasnik:</InfoLabel>
+          <OwnerInfo>
+            <OwnerName>{data.OwnersSurnameOrBusinessName || 'N/A'}</OwnerName>
+            <OwnerDetail>{data.OwnerName || ''}</OwnerDetail>
+          </OwnerInfo>
+        </OwnerRow>
+        <OwnerRow>
+          <InfoLabel>Adresa:</InfoLabel>
+          <OwnerAddress>{data.OwnerAddress || 'N/A'}</OwnerAddress>
+        </OwnerRow>
       </VehicleDetailsContainer>
     </CardContainer>
   );

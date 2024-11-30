@@ -14,8 +14,10 @@ export { default as ExclamationWarningRoundIcon } from './ExclamationWarningRoun
 export { default as FileDownloadIcon } from './FileDownloadIcon';
 export { default as FileLineIcon } from './FileLineIcon';
 export { default as HouseIcon } from './HouseIcon';
+export { default as HouseWindowIcon } from './HouseWindowIcon';
 export { default as IdProofLineIcon } from './IdProofLineIcon';
 export { default as InfoCircleLineIcon } from './InfoCircleLineIcon';
+export { default as RecycleBinIcon } from './RecycleBinIcon';
 export { default as RecycleBinLineIcon } from './RecycleBinLineIcon';
 export { default as SearchLineIcon } from './SearchLineIcon';
 export { default as TextDocumentRemoveIcon } from './TextDocumentRemoveIcon';

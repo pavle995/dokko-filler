@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { DescriptionIcon, BuildingIcon, HouseIcon } from '~components/Icons';
+import {
+  DescriptionIcon,
+  BuildingIcon,
+  HouseWindowIcon,
+} from '~components/Icons';
 
 const StyledListItemLink = styled(NavLink)`
   display: flex;
@@ -45,7 +49,7 @@ function NavigationItem({ label, icon, route }) {
   const icons = {
     DescriptionIcon: <DescriptionIcon />,
     BuildingIcon: <BuildingIcon />,
-    HouseIcon: <HouseIcon />,
+    HouseIcon: <HouseWindowIcon />,
   };
 
   return (

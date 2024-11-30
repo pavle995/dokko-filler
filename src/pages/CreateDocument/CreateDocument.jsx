@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import IDCard from '~shared-components/IDCard/IDCard';
-import VehicleCardID from '~shared-components/VehicleCardID/VehicleCardID';
-import { IdProofLineIcon, CarDocumentIcon } from '~components/Icons';
-
+import DocumentRenderer from './DocumentRenderer/DocumentRenderer';
+import read from '~api/read';
+import getDocumentById from '~api/getDocumentById';
+import { useNotification } from '~context/NotificationContext';
+import useLazyFetch from '~hooks/useLazyFetch';
+import useFetch from '~hooks/useFetch';
+import ErrorHandler from '~shared-components/ErrorHandler/ErrorHandler';
+import Loading from '~shared-components/Loading/Loading';
+import cardsConfig from './config/cardsConfig';
 const CreateContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -34,7 +39,7 @@ const SubTitle = styled.h2`
   color: ${({ theme }) => theme.palette.text.secondary};
   text-align: left;
   width: 100%;
-  margin-bottom: 8px; /* Smaller spacing for subheading */
+  margin-bottom: 8px;
 `;
 
 const PlaceholderContainer = styled.div`
@@ -45,123 +50,186 @@ const PlaceholderContainer = styled.div`
   width: 100%;
 `;
 
-const PlaceholderCard = styled.div`
-  width: 400px;
-  height: 450px;
-  border: 2px dashed ${({ theme }) => theme.palette.grey[400]};
-  border-radius: 4px;
+const StateContainerWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  transition:
-    background-color 0.3s ease,
-    transform 0.2s ease;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.palette.grey[900]};
-    transform: scale(1.05);
-  }
+  height: 100%;
 `;
 
-const StyledIDIcon = styled(IdProofLineIcon)`
-  width: 50px;
-  height: 50px;
-  fill: ${({ theme }) => theme.palette.grey[400]};
-`;
+// const mockCard = {
+//   DocumentNumber: '0068',
+//   DocumentType: 'ID',
+//   Surname: 'STANKOVIĆ',
+//   GivenName: 'PETAR',
+//   Sex: 'M',
+//   PlaceOfBirth: 'BEOGRAD',
+//   DateOfBirth: '01.07.1991.',
+//   Street: 'BULEVAR KRALJA ALEKSANDRA',
+//   AddressNumber: '320',
+//   Place: 'BEOGRAD',
+//   PersonalNumber: '0107',
+// };
 
-const StyledCarIcon = styled(CarDocumentIcon)`
-  width: 50px;
-  height: 50px;
-  fill: ${({ theme }) => theme.palette.grey[400]};
-`;
-
-const PlaceholderText = styled.span`
-  font-size: 1rem;
-  font-weight: bold;
-  color: ${({ theme }) => theme.palette.text.secondary};
-`;
-
-const mockBuyer = {
-  DocumentNumber: '0068',
-  DocumentType: 'ID',
-  Surname: 'STANKOVIĆ',
-  GivenName: 'PETAR',
-  Sex: 'M',
-  PlaceOfBirth: 'BEOGRAD',
-  DateOfBirth: '01.07.1991.',
-  Street: 'BULEVAR KRALJA ALEKSANDRA',
-  AddressNumber: '320',
-  Place: 'BEOGRAD',
-  PersonalNumber: '0107',
-};
-
-const mockSeller = {
-  DocumentNumber: '0099',
-  DocumentType: 'ID',
-  Surname: 'JOVANOVIĆ',
-  GivenName: 'ANA',
-  Sex: 'F',
-  PlaceOfBirth: 'NOVI SAD',
-  DateOfBirth: '15.03.1988.',
-  Street: 'MIHAILA PUPINA',
-  AddressNumber: '12B',
-  Place: 'NOVI SAD',
-  PersonalNumber: '0208',
-};
-
-const mockVehicle = {
-  RegistrationNumber: 'BG1234AB',
-  VehicleType: 'Putnički automobil',
-  Manufacturer: 'Volkswagen',
-  Model: 'Golf 7',
-  YearOfManufacture: '2018',
-  EngineCapacity: '1.6L',
-  Owner: 'Petar Stanković',
-  Address: 'Bulevar kralja Aleksandra 320, Beograd',
-};
+const needed_cards = [
+  {
+    name: 'Licna Karta Prodavac',
+    type: 'licna_karta',
+    fields: [
+      'name',
+      'PersonalNumber',
+      'Place',
+      'Street',
+      'AddressNumber',
+      'IssuingAuthority',
+      'DocumentNumber',
+    ],
+    order: 1,
+  },
+  {
+    name: 'Licna Karta Kupac',
+    type: 'licna_karta',
+    fields: [
+      'name',
+      'PersonalNumber',
+      'Place',
+      'Street',
+      'AddressNumber',
+      'IssuingAuthority',
+      'DocumentNumber',
+    ],
+    order: 2,
+  },
+  {
+    name: 'Saobracajna dozvola',
+    type: 'saobracajna_dozvola',
+    fields: [
+      'VehicleMake',
+      'CommercialDescription',
+      'VehicleType',
+      'VehicleIdNumber',
+      'EngineIdNumber',
+      'YearOfProduction',
+      'MaximumNetPower',
+      'EngineCapacity',
+      'MaximumPermissibleLadenMass',
+      'NumberOfSeats',
+      'ColourOfVehicle',
+      'RegistrationNumberOfVehicle',
+    ],
+    order: 3,
+  },
+];
 
 function CreateDocument() {
   const { id } = useParams();
-  const [buyerData, setBuyerData] = useState(null);
-  const [sellerData, setSellerData] = useState(null);
-  const [vehicleData, setVehicleData] = useState(null);
+  const showNotification = useNotification();
+  const fetchDocument = useCallback(() => getDocumentById(id), [id]);
+  const removeSpaces = (str) => str.replace(/\s+/g, '');
+  const [currentCardName, setCurrentCardName] = useState(null);
 
-  const loadBuyer = () => setBuyerData(mockBuyer);
-  const loadSeller = () => setSellerData(mockSeller);
-  const loadVehicle = () => setVehicleData(mockVehicle);
+  const [cardsData, setCardsData] = useState(
+    Object.fromEntries(
+      needed_cards?.map((card) => [removeSpaces(card.name), null])
+    )
+  );
+
+  const [
+    runFetchCard,
+    {
+      data: cardData,
+      error: cardError,
+      loading: fetchCardLoading,
+      resetData: resetCardData,
+    },
+  ] = useLazyFetch(read);
+
+  const {
+    data: document,
+    loading: documentLoading,
+    error: fetchDocumentError,
+  } = useFetch(fetchDocument);
+
+  const filteredCards = useMemo(() => {
+    return needed_cards
+      ?.map((requiredCard) =>
+        cardsConfig?.find((card) => card.name === requiredCard.name)
+      )
+      .filter(Boolean);
+  }, [needed_cards, cardsConfig]);
+
+  useEffect(() => {
+    if (cardError && currentCardName) {
+      showNotification(
+        `Neuspešno učitavanje dokumenta. Molimo vas pokušajte opet.`,
+        5000,
+        'error'
+      );
+    }
+
+    if (cardData && currentCardName) {
+      setCardsData((prev) => ({
+        ...prev,
+        [currentCardName]: cardData,
+      }));
+      setCurrentCardName(null);
+    }
+  }, [cardData, currentCardName, cardError]);
+
+  useEffect(() => {
+    if (fetchDocumentError) {
+      showNotification(
+        'Neuspešno učitavanje ugovora. Molimo vas pokušajte opet.',
+        5000,
+        'error'
+      );
+    }
+  }, [fetchDocumentError]);
+
+  const handleClick = (cardName) => {
+    setCurrentCardName(removeSpaces(cardName));
+    resetCardData();
+    runFetchCard();
+  };
+
+  const handleRemove = (cardName) => {
+    setCardsData((prev) => ({
+      ...prev,
+      [removeSpaces(cardName)]: null,
+    }));
+  };
+
+  // if (fetchDocumentError)
+  //   return (
+  //     <StateContainerWrapper>
+  //       <ErrorHandler message={'Neuspešno učitavanje ugovora.'}></ErrorHandler>
+  //     </StateContainerWrapper>
+  //   );
+
+  if (documentLoading)
+    return (
+      <StateContainerWrapper>
+        <Loading />
+      </StateContainerWrapper>
+    );
 
   return (
     <CreateContainer>
       <Title>Kreiranje dokumenta {id}</Title>
+
       <SubTitle>Neophodna dokumenta</SubTitle>
       <PlaceholderContainer>
-        {!buyerData ? (
-          <PlaceholderCard onClick={loadBuyer}>
-            <StyledIDIcon />
-            <PlaceholderText>Dodaj kupca</PlaceholderText>
-          </PlaceholderCard>
-        ) : (
-          <IDCard data={buyerData} />
-        )}
-        {!sellerData ? (
-          <PlaceholderCard onClick={loadSeller}>
-            <StyledIDIcon />
-            <PlaceholderText>Dodaj prodavca</PlaceholderText>
-          </PlaceholderCard>
-        ) : (
-          <IDCard data={sellerData} />
-        )}
-        {!vehicleData ? (
-          <PlaceholderCard onClick={loadVehicle}>
-            <StyledCarIcon />
-            <PlaceholderText>Dodaj saobraćajnu dozvolu</PlaceholderText>
-          </PlaceholderCard>
-        ) : (
-          <VehicleCardID data={vehicleData} />
-        )}
+        {filteredCards.map((card, index) => (
+          <DocumentRenderer
+            key={index}
+            type={card.type}
+            data={cardsData[removeSpaces(card.name)]}
+            onClick={() => handleClick(card.name)}
+            onRemove={() => handleRemove(card.name)}
+            text={card.text}
+            loading={fetchCardLoading}
+          />
+        ))}
       </PlaceholderContainer>
     </CreateContainer>
   );

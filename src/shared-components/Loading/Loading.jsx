@@ -24,7 +24,7 @@ const LoadingContainer = styled.div`
   color: ${({ theme }) => theme.palette.grey[700]};
   animation: ${pulseAnimation} 1.5s ease-in-out infinite;
   overflow: hidden;
-  position: fixed;
+  position: initial;
 `;
 
 const AnimatedIcon = styled(ActivityLogIcon)`
