@@ -17,6 +17,7 @@ export { default as HouseIcon } from './HouseIcon';
 export { default as HouseWindowIcon } from './HouseWindowIcon';
 export { default as IdProofLineIcon } from './IdProofLineIcon';
 export { default as InfoCircleLineIcon } from './InfoCircleLineIcon';
+export { default as PlusRoundLineIcon } from './PlusRoundLineIcon';
 export { default as RecycleBinIcon } from './RecycleBinIcon';
 export { default as RecycleBinLineIcon } from './RecycleBinLineIcon';
 export { default as SearchLineIcon } from './SearchLineIcon';

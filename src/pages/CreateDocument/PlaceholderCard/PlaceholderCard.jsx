@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Loading from '~shared-components/Loading/Loading';
+import { PlusRoundLineIcon } from '~components/Icons';
 
 const CardContainer = styled.div`
   width: 400px;
@@ -13,6 +14,7 @@ const CardContainer = styled.div`
   justify-content: center;
   gap: 8px;
   cursor: pointer;
+  position: relative;
   transition:
     background-color 0.3s ease,
     transform 0.2s ease;
@@ -24,9 +26,46 @@ const CardContainer = styled.div`
 `;
 
 const IconContainer = styled.div`
-  & > svg {
-    height: 50px;
-    fill: ${({ theme }) => theme.palette.grey[400]};
+  position: relative;
+  width: 50px;
+  height: 50px;
+
+  & > .old-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+    opacity: 1;
+    transform: scale(1);
+    fill: ${({ theme }) => theme.palette.grey[500]};
+  }
+
+  & > .new-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+    opacity: 0;
+    transform: scale(0.8);
+    fill: ${({ theme }) => theme.palette.grey[500]};
+  }
+
+  ${CardContainer}:hover & > .old-icon {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  ${CardContainer}:hover & > .new-icon {
+    opacity: 1;
+    transform: scale(1);
   }
 `;
 
@@ -42,10 +81,13 @@ const PlaceholderCard = ({ icon: Icon, text, onClick, loading }) => {
       {loading ? (
         <Loading />
       ) : (
-        <IconContainer>
-          <Icon />
+        <>
+          <IconContainer>
+            <Icon className="old-icon" />
+            <PlusRoundLineIcon className="new-icon" />
+          </IconContainer>
           <PlaceholderText>{text}</PlaceholderText>
-        </IconContainer>
+        </>
       )}
     </CardContainer>
   );

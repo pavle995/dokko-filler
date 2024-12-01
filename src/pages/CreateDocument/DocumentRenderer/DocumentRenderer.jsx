@@ -13,7 +13,6 @@ const DocumentRenderer = ({
   loading,
   dataData,
 }) => {
-  // console.log(dataData);
   if (!data) {
     return (
       <PlaceholderCard

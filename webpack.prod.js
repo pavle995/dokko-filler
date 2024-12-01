@@ -3,9 +3,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const webpack = require('webpack');
 
 module.exports = {
   mode: 'production',
+  performance: {
+    maxAssetSize: 500000,
+    hints: 'warning',
+  },
   module: {
     rules: [
       {
@@ -37,6 +42,9 @@ module.exports = {
     },
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       minify: {
