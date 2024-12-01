@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import DocumentItem from '~shared-components/DocumentItem/DocumentItem';
 import useFetch from '~hooks/useFetch';
 import getDocuments from '~api/getDocuments';
@@ -75,7 +75,7 @@ function DocumentsList() {
     <DocumentsContainer>
       <Title>Ugovori</Title>
       <Wrapper>
-        {documents.body?.map((doc) => (
+        {documents?.body.map((doc) => (
           <DocumentItem
             key={doc.id}
             name={doc.name}

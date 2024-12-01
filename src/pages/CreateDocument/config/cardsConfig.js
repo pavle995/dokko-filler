@@ -1,47 +1,47 @@
 const cardsConfig = [
   {
     type: 'licna_karta',
-    text: 'Dodaj kupca',
+    text: 'Učitaj kupca',
     name: 'Licna Karta Kupac',
   },
   {
     type: 'licna_karta',
-    text: 'Dodaj prodavca',
+    text: 'Učitaj prodavca',
     name: 'Licna Karta Prodavac',
   },
   {
     type: 'saobracajna_dozvola',
-    text: 'Dodaj saobraćajnu dozvolu',
+    text: 'Učitaj saobraćajnu dozvolu',
     name: 'Saobracajna dozvola',
   },
   {
     type: 'licna_karta',
-    text: 'Dodaj poklonodavca',
+    text: 'Učitaj poklonodavca',
     name: 'Licna Karta Poklonodavac',
   },
   {
     type: 'licna_karta',
-    text: 'Dodaj poklonoprimaoca',
+    text: 'Učitaj poklonoprimaoca',
     name: 'Licna Karta Poklonoprimac',
   },
   {
     type: 'licna_karta',
-    text: 'Dodaj davaoca izdržavanja',
+    text: 'Učitaj davaoca izdržavanja',
     name: 'Licna Karta Davaoc Izdrzavanja',
   },
   {
     type: 'licna_karta',
-    text: 'Dodaj primaoca izdržavanja',
+    text: 'Učitaj primaoca izdržavanja',
     name: 'Licna Karta Primalac Izdržavanja',
   },
   {
     type: 'licna_karta',
-    text: 'Dodaj punomoćnika',
+    text: 'Učitaj punomoćnika',
     name: 'Licna Karta Punomoćnik',
   },
   {
     type: 'licna_karta',
-    text: 'Dodaj davaoca punomoćja',
+    text: 'Učitaj davaoca punomoćja',
     name: 'Licna Karta Davalac Punomoćja',
   },
 ];

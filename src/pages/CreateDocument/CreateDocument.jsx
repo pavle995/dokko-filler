@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import DocumentRenderer from './DocumentRenderer/DocumentRenderer';
-import read from '~api/read';
 import getDocumentById from '~api/getDocumentById';
 import { useNotification } from '~context/NotificationContext';
-import useLazyFetch from '~hooks/useLazyFetch';
 import useFetch from '~hooks/useFetch';
 import ErrorHandler from '~shared-components/ErrorHandler/ErrorHandler';
 import Loading from '~shared-components/Loading/Loading';
 import cardsConfig from './config/cardsConfig';
+import FilteredCardList from './FilteredCardLIst/FilteredCardList';
+
 const CreateContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -57,23 +56,17 @@ const StateContainerWrapper = styled.div`
   height: 100%;
 `;
 
+const Header = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
 function CreateDocument() {
   const { id } = useParams();
   const { name } = useParams();
   const showNotification = useNotification();
   const fetchDocument = useCallback(() => getDocumentById(id), [id]);
-  const removeSpaces = (str) => str.replace(/\s+/g, '');
-  const [currentCardName, setCurrentCardName] = useState(null);
-
-  const [
-    runFetchCard,
-    {
-      data: cardData,
-      error: cardError,
-      loading: fetchCardLoading,
-      resetData: resetCardData,
-    },
-  ] = useLazyFetch(read);
 
   const {
     data: document,
@@ -81,40 +74,13 @@ function CreateDocument() {
     error: fetchDocumentError,
   } = useFetch(fetchDocument);
 
-  const [cardsData, setCardsData] = useState(
-    Object.fromEntries(
-      (document?.body?.needed_cards || []).map((card) => [
-        removeSpaces(card.name),
-        null,
-      ])
-    )
-  );
-
   const filteredCards = useMemo(() => {
-    return document?.body?.needed_cards
-      ?.map((requiredCard) =>
+    return document?.body.needed_cards
+      .map((requiredCard) =>
         cardsConfig?.find((card) => card.name === requiredCard.name)
       )
       .filter(Boolean);
   }, [document, cardsConfig]);
-
-  useEffect(() => {
-    if (cardError && currentCardName) {
-      showNotification(
-        `Neuspešno učitavanje dokumenta. Molimo vas pokušajte opet.`,
-        5000,
-        'error'
-      );
-    }
-
-    if (cardData && currentCardName) {
-      setCardsData((prev) => ({
-        ...prev,
-        [currentCardName]: cardData,
-      }));
-      setCurrentCardName(null);
-    }
-  }, [cardData, currentCardName, cardError]);
 
   useEffect(() => {
     if (fetchDocumentError) {
@@ -125,19 +91,6 @@ function CreateDocument() {
       );
     }
   }, [fetchDocumentError]);
-
-  const handleClick = (cardName) => {
-    setCurrentCardName(removeSpaces(cardName));
-    resetCardData();
-    runFetchCard();
-  };
-
-  const handleRemove = (cardName) => {
-    setCardsData((prev) => ({
-      ...prev,
-      [removeSpaces(cardName)]: null,
-    }));
-  };
 
   if (fetchDocumentError)
     return (
@@ -155,22 +108,12 @@ function CreateDocument() {
 
   return (
     <CreateContainer>
-      <Title>{name}</Title>
-
-      <SubTitle>Neophodna dokumenta</SubTitle>
+      <Header>
+        <Title>{name}</Title>
+      </Header>
+      <SubTitle>Učitaj neophodna dokumenta</SubTitle>
       <PlaceholderContainer>
-        {filteredCards.map((card, index) => (
-          <DocumentRenderer
-            key={index}
-            type={card.type}
-            data={cardsData[removeSpaces(card.name)]}
-            onClick={() => handleClick(card.name)}
-            onRemove={() => handleRemove(card.name)}
-            text={card.text}
-            loading={fetchCardLoading}
-            dataData={cardsData}
-          />
-        ))}
+        <FilteredCardList filteredCards={filteredCards} />
       </PlaceholderContainer>
     </CreateContainer>
   );
