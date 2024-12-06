@@ -75,7 +75,7 @@ const PlaceholderText = styled.div`
   color: ${({ theme }) => theme.palette.text.secondary};
 `;
 
-const PlaceholderCard = ({ icon: Icon, text, onClick, loading }) => {
+const PlaceholderCard = ({ icon: Icon, name, onClick, loading }) => {
   return (
     <CardContainer onClick={onClick}>
       {loading ? (
@@ -86,7 +86,7 @@ const PlaceholderCard = ({ icon: Icon, text, onClick, loading }) => {
             <Icon className="old-icon" />
             <PlusRoundLineIcon className="new-icon" />
           </IconContainer>
-          <PlaceholderText>{text}</PlaceholderText>
+          <PlaceholderText>{name}</PlaceholderText>
         </>
       )}
     </CardContainer>

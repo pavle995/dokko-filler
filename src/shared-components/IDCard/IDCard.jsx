@@ -87,8 +87,13 @@ const StyledIconButton = styled(IconButton)`
   }
 `;
 
-function IDCard({ data, onRemove }) {
-  const isMale = data.Sex === 'M';
+function IDCard({ data, onRemove, order }) {
+  if (!data) return null; // Bezbednosna provera ako podaci nisu prosleđeni
+
+  // Dinamično dohvatamo podatke koristeći sufiks `order`
+  const getKey = (key) => `${key}_${order}`;
+
+  const isMale = data[getKey('Sex')] === 'M';
 
   return (
     <CardContainer>
@@ -96,7 +101,9 @@ function IDCard({ data, onRemove }) {
         <ProfileIcon>
           {isMale ? <YoungBusinessmanIcon /> : <BusinessWomanWithTieIcon />}
         </ProfileIcon>
-        <DocumentType>{data.DocumentType}</DocumentType>
+        <DocumentType>
+          {data[getKey('DocumentType')] || 'Lična karta'}
+        </DocumentType>
         <StyledIconButton onClick={onRemove} aria-label="Delete">
           <DeleteIcon>
             <RecycleBinIcon />
@@ -104,31 +111,32 @@ function IDCard({ data, onRemove }) {
         </StyledIconButton>
       </Header>
       <InfoRow>
-        <InfoLabel>Broj licne karte:</InfoLabel>
-        <div>{data.DocumentNumber}</div>
+        <InfoLabel>Broj lične karte:</InfoLabel>
+        <div>{data[getKey('DocumentNumber')]}</div>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Ime i prezime:</InfoLabel>
         <div>
-          {data.GivenName} {data.Surname}
+          {data[getKey('GivenName')]} {data[getKey('Surname')]}
         </div>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Datum rođenja:</InfoLabel>
-        <div>{data.DateOfBirth}</div>
+        <div>{data[getKey('DateOfBirth')]}</div>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Mesto rođenja:</InfoLabel>
-        <div>{data.PlaceOfBirth}</div>
+        <div>{data[getKey('PlaceOfBirth')]}</div>
       </InfoRow>
       <InfoRow>
         <InfoLabel>JMBG:</InfoLabel>
-        <div>{data.PersonalNumber}</div>
+        <div>{data[getKey('PersonalNumber')]}</div>
       </InfoRow>
       <AddressContainer>
         <InfoLabel>Adresa prebivališta:</InfoLabel>
         <div>
-          {data.Street} {data.AddressNumber}, {data.Place}
+          {data[getKey('Street')]} {data[getKey('AddressNumber')]}{' '}
+          {data[getKey('Place')]}
         </div>
       </AddressContainer>
     </CardContainer>

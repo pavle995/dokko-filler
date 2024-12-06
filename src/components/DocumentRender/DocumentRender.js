@@ -8,17 +8,28 @@ const DocumentRenderer = ({
   type,
   data,
   onClick,
-  text,
+  name,
   onRemove,
+  order,
+  requiredFieldsMap,
   loading,
-  dataData,
 }) => {
-  if (!data) {
+  const isCardFilled = (type, data, order) => {
+    const requiredFields = requiredFieldsMap[type]?.map(
+      (field) => `${field}_${order}`
+    );
+
+    if (!requiredFields || !data) return false;
+
+    return requiredFields.every((field) => data[field]);
+  };
+
+  if (!isCardFilled(type, data, order)) {
     return (
       <PlaceholderCard
         icon={type === 'licna_karta' ? IdProofLineIcon : CarDocumentIcon}
-        text={text}
-        onClick={() => onClick(type)}
+        name={name}
+        onClick={onClick}
         loading={loading}
       />
     );
@@ -27,9 +38,9 @@ const DocumentRenderer = ({
   return (
     <div>
       {type === 'saobracajna_dozvola' ? (
-        <VehicleCardID data={data} onRemove={onRemove} />
+        <VehicleCardID data={data} onRemove={onRemove} order={order} />
       ) : (
-        <IDCard data={data} onRemove={onRemove} />
+        <IDCard data={data} onRemove={onRemove} order={order} />
       )}
     </div>
   );

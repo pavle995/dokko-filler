@@ -118,7 +118,10 @@ const StyledIconButton = styled(IconButton)`
   }
 `;
 
-function VehicleCardID({ data, onRemove }) {
+function VehicleCardID({ data, onRemove, order }) {
+  // Funkcija za generisanje ključa sa sufiksom
+  const getKey = (key) => `${key}_${order}`;
+
   return (
     <CardContainer>
       <Header>
@@ -134,39 +137,43 @@ function VehicleCardID({ data, onRemove }) {
       </Header>
       <InfoRow>
         <InfoLabel>Broj registracije:</InfoLabel>
-        <InfoValue>{data.RegistrationNumberOfVehicle || 'N/A'}</InfoValue>
+        <InfoValue>
+          {data[getKey('RegistrationNumberOfVehicle')] || 'N/A'}
+        </InfoValue>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Tip vozila:</InfoLabel>
-        <InfoValue>{data.VehicleCategory || 'N/A'}</InfoValue>
+        <InfoValue>{data[getKey('VehicleCategory')] || 'N/A'}</InfoValue>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Proizvođač:</InfoLabel>
-        <InfoValue>{data.VehicleMake || 'N/A'}</InfoValue>
+        <InfoValue>{data[getKey('VehicleMake')] || 'N/A'}</InfoValue>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Model:</InfoLabel>
-        <InfoValue>{data.CommercialDescription || 'N/A'}</InfoValue>
+        <InfoValue>{data[getKey('CommercialDescription')] || 'N/A'}</InfoValue>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Godina proizvodnje:</InfoLabel>
-        <InfoValue>{data.YearOfProduction || 'N/A'}</InfoValue>
+        <InfoValue>{data[getKey('YearOfProduction')] || 'N/A'}</InfoValue>
       </InfoRow>
       <InfoRow>
         <InfoLabel>Zapremina motora:</InfoLabel>
-        <InfoValue>{data.EngineCapacity || 'N/A'}</InfoValue>
+        <InfoValue>{data[getKey('EngineCapacity')] || 'N/A'}</InfoValue>
       </InfoRow>
       <VehicleDetailsContainer>
         <OwnerRow>
           <InfoLabel>Vlasnik:</InfoLabel>
           <OwnerInfo>
-            <OwnerName>{data.OwnersSurnameOrBusinessName || 'N/A'}</OwnerName>
-            <OwnerDetail>{data.OwnerName || ''}</OwnerDetail>
+            <OwnerName>
+              {data[getKey('OwnersSurnameOrBusinessName')] || 'N/A'}
+            </OwnerName>
+            <OwnerDetail>{data[getKey('OwnerName')] || ''}</OwnerDetail>
           </OwnerInfo>
         </OwnerRow>
         <OwnerRow>
           <InfoLabel>Adresa:</InfoLabel>
-          <OwnerAddress>{data.OwnerAddress || 'N/A'}</OwnerAddress>
+          <OwnerAddress>{data[getKey('OwnerAddress')] || 'N/A'}</OwnerAddress>
         </OwnerRow>
       </VehicleDetailsContainer>
     </CardContainer>

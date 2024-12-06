@@ -5,7 +5,7 @@ import AboutPage from '~pages/AboutPage/AboutPage';
 import DocumentsList from '~pages/DocumentsList/DocumetsList';
 import PageNotFound from '~pages/PageNotFound/PageNotFound';
 import HomePage from '~pages/HomePage/HomePage';
-import CreateDocument from '~pages/CreateDocument/CreateDocument';
+import GenerateDocumentPage from '~pages/GenerateDocumentPage/GenerateDocumentPage';
 
 function Root() {
   return (
@@ -16,7 +16,7 @@ function Root() {
           <Route path="/documents" element={<DocumentsList />} />
           <Route
             path="/documents/create/:name/:id"
-            element={<CreateDocument />}
+            element={<GenerateDocumentPage />}
           />
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<PageNotFound />} />
