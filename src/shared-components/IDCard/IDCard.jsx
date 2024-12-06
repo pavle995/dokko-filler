@@ -88,9 +88,9 @@ const StyledIconButton = styled(IconButton)`
 `;
 
 function IDCard({ data, onRemove, order }) {
-  if (!data) return null; // Bezbednosna provera ako podaci nisu prosleđeni
+  if (!data) return null;
 
-  // Dinamično dohvatamo podatke koristeći sufiks `order`
+
   const getKey = (key) => `${key}_${order}`;
 
   const isMale = data[getKey('Sex')] === 'M';

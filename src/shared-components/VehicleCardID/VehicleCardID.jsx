@@ -119,7 +119,6 @@ const StyledIconButton = styled(IconButton)`
 `;
 
 function VehicleCardID({ data, onRemove, order }) {
-  // Funkcija za generisanje ključa sa sufiksom
   const getKey = (key) => `${key}_${order}`;
 
   return (

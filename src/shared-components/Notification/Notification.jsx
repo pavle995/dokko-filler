@@ -6,6 +6,11 @@ const StyledSnackbar = styled(Snackbar)`
   margin-top: 45px;
 `;
 
+const StyledAlert = styled(Alert)`
+  word-break: break-word;
+  max-width: 300px;
+`;
+
 function Notification({ message, type = 'info', duration = 5000, onClose }) {
   const [open, setOpen] = useState(true);
 
@@ -31,9 +36,9 @@ function Notification({ message, type = 'info', duration = 5000, onClose }) {
       onClose={handleClose}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
     >
-      <Alert severity={type} variant="filled">
+      <StyledAlert severity={type} variant="filled">
         {message}
-      </Alert>
+      </StyledAlert>
     </StyledSnackbar>
   );
 }
