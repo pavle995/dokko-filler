@@ -9,6 +9,7 @@ module.exports = {
           ['~hooks', './src/hooks'],
           ['~api', './src/api'],
           ['~context', './src/context'],
+          ['~utils', './src/utils'],
         ],
         extensions: ['.js', '.jsx', '.json'],
       },

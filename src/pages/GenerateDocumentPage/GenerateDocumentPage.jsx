@@ -9,6 +9,7 @@ import Loading from '~shared-components/Loading/Loading';
 import DocumentRenderer from '~components/DocumentRender/DocumentRender';
 import useLazyFetch from '~hooks/useLazyFetch';
 import read from '~api/read';
+import DocumentGenerator from '~components/DocumentGenerator/DocumentGenerator';
 
 const CreateContainer = styled.div`
   display: flex;
@@ -135,23 +136,11 @@ function GenerateDocumentPage() {
   }, [cardError]);
 
   useEffect(() => {
-    if (card && selectedType && selectedOrder) {
-      console.log('Učitani podaci za karticu:', card);
-
+    if (card && selectedOrder) {
       const updatedCardData = {};
-      const requiredFields = requiredFieldsMap[selectedType];
 
-      if (!requiredFields) {
-        console.error(`Nepoznat tip kartice: ${selectedType}`);
-        return;
-      }
-
-      requiredFields.forEach((field) => {
-        if (card[field]) {
-          updatedCardData[`${field}_${selectedOrder}`] = card[field];
-        } else {
-          console.warn(`Polje nedostaje: ${field}`);
-        }
+      Object.keys(card).forEach((field) => {
+        updatedCardData[`${field}_${selectedOrder}`] = card[field];
       });
 
       setCardData((prevState) => ({
@@ -161,16 +150,18 @@ function GenerateDocumentPage() {
 
       resetCardData();
     }
-  }, [card, selectedType, selectedOrder]);
+  }, [card, selectedOrder]);
 
   const handleCardRemove = (type, order) => {
     setCardData((prevState) => {
       const updatedState = { ...prevState };
-      const requiredFields = requiredFieldsMap[type];
-      requiredFields.forEach((field) => {
-        const key = `${field}_${order}`;
-        delete updatedState[key];
+
+      Object.keys(updatedState).forEach((key) => {
+        if (key.endsWith(`_${order}`)) {
+          delete updatedState[key];
+        }
       });
+
       return updatedState;
     });
   };
@@ -207,15 +198,21 @@ function GenerateDocumentPage() {
             key={card.order}
             type={card.type}
             name={card.name}
-            data={cardData}
+            order={card.order}
             onClick={() => handleCardClick(card.type, card.order)}
             onRemove={() => handleCardRemove(card.type, card.order)}
+            data={cardData}
             loading={fetchCardLoading}
-            order={card.order}
             requiredFieldsMap={requiredFieldsMap}
           />
         ))}
       </PlaceholderContainer>
+      <div>
+        <DocumentGenerator
+          readFields={cardData}
+          templateURL={document.body.document_url_docx}
+        />
+      </div>
     </CreateContainer>
   );
 }
