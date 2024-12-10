@@ -6,6 +6,12 @@ const tokens = (mode) => ({
     ? {
         palette: {
           mode: 'dark',
+          red: {
+            light: '#f28b82',
+            main: '#e53935',
+            dark: '#b71c1c',
+            contrastText: '#ffffff',
+          },
           grey: {
             100: '#e0e0e0',
             200: '#c2c2c2',
@@ -27,6 +33,12 @@ const tokens = (mode) => ({
             700: '#bfbfbf',
             800: '#b5b5b5',
             900: '#ababab',
+          },
+          warn: {
+            light: '#fff59d',
+            main: '#ffeb3b',
+            dark: '#fbc02d',
+            contrastText: '#000000',
           },
           primary: {
             light: '#a1a4ab',
@@ -55,6 +67,12 @@ const tokens = (mode) => ({
       }
     : {
         palette: {
+          red: {
+            light: '#f28b82',
+            main: '#d32f2f',
+            dark: '#c62828',
+            contrastText: '#ffffff',
+          },
           mode: 'light',
           grey: {
             100: '#141414',
@@ -78,7 +96,12 @@ const tokens = (mode) => ({
             800: '#f7f7f7',
             900: '#ffffff',
           },
-
+          warn: {
+            light: '#fff59d',
+            main: '#ffeb3b',
+            dark: '#fbc02d',
+            contrastText: '#000000',
+          },
           primary: {
             light: '#f2f0f0',
             main: '#336699',

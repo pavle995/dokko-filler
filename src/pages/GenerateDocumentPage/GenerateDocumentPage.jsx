@@ -10,6 +10,7 @@ import DocumentRenderer from '~components/DocumentRender/DocumentRender';
 import useLazyFetch from '~hooks/useLazyFetch';
 import read from '~api/read';
 import DocumentGenerator from '~components/DocumentGenerator/DocumentGenerator';
+import { requiredFieldsMap } from './consts';
 
 const CreateContainer = styled.div`
   display: flex;
@@ -30,6 +31,13 @@ const Title = styled.h1`
   color: ${({ theme }) => theme.palette.primary.main};
   text-align: left;
   width: 100%;
+`;
+
+const Header = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-bottom: 16px;
   border-bottom: 1px solid ${({ theme }) => theme.palette.grey[900]};
 `;
@@ -43,10 +51,15 @@ const SubTitle = styled.h2`
   margin-bottom: 8px;
 `;
 
+const SubTitleContainer = styled.div`
+  width: 100%;
+  margin-bottom: 24px;
+`;
+
 const PlaceholderContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-evenly;
   gap: 24px;
   width: 100%;
 `;
@@ -57,38 +70,6 @@ const StateContainerWrapper = styled.div`
   justify-content: center;
   height: 100%;
 `;
-
-const Header = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const requiredFieldsMap = {
-  licna_karta: [
-    'PersonalNumber',
-    'DocumentNumber',
-    'Place',
-    'GivenName',
-    'Surname',
-    'DateOfBirth',
-    'PlaceOfBirth',
-    'Street',
-    'AddressNumber',
-    'Sex',
-  ],
-  saobracajna_dozvola: [
-    'RegistrationNumberOfVehicle',
-    'VehicleCategory',
-    'VehicleMake',
-    'CommercialDescription',
-    'YearOfProduction',
-    'EngineCapacity',
-    'OwnersSurnameOrBusinessName',
-    'OwnerName',
-    'OwnerAddress',
-  ],
-};
 
 function GenerateDocumentPage() {
   const { id } = useParams();
@@ -190,8 +171,14 @@ function GenerateDocumentPage() {
     <CreateContainer>
       <Header>
         <Title>{name}</Title>
+        <DocumentGenerator
+          readFields={cardData}
+          templateURL={document.body.document_url_docx}
+        />
       </Header>
-      <SubTitle>Učitaj neophodna dokumenta</SubTitle>
+      <SubTitleContainer>
+        <SubTitle>Učitaj neophodna dokumenta</SubTitle>
+      </SubTitleContainer>
       <PlaceholderContainer>
         {document.body.needed_cards?.map((card) => (
           <DocumentRenderer
@@ -207,12 +194,6 @@ function GenerateDocumentPage() {
           />
         ))}
       </PlaceholderContainer>
-      <div>
-        <DocumentGenerator
-          readFields={cardData}
-          templateURL={document.body.document_url_docx}
-        />
-      </div>
     </CreateContainer>
   );
 }
