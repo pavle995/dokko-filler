@@ -5,14 +5,9 @@ import { formatOnlyFirstUpper } from '~utils/util';
 import { getDocForm, downloadFile } from '~utils/fileDownloader';
 import { PatchType, TextRun, patchDocument } from 'docx';
 import { fieldsForFormating } from './consts';
-import {
-  InfoCircleLineIcon,
-  DownloadToStorageIcon,
-  OverviewIcon,
-} from '~components/Icons';
+import { OverviewIcon } from '~components/Icons';
 import DocumentModal from '~components/DocumentModal/DocumentModal';
 
-// Styled Components sa bojama iz teme
 const GenerateButton = styled.button`
   padding: 10px 20px;
   background-color: ${({ theme }) => theme.palette.primary.main};
