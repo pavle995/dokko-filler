@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ColorModeContext } from '../../theme';
+import { ColorModeContext } from '../../theme/theme';
 import styled from 'styled-components';
 
 const SwitchContainer = styled.div`
