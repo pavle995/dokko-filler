@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Mammoth from 'mammoth';
+import DocumentModal from '~components/DocumentModal/DocumentModal';
 import { formatOnlyFirstUpper } from '~utils/util';
+import { cyrilicToLatin } from 'serbian-script-converter';
 import { getDocForm, downloadFile } from '~utils/fileDownloader';
 import { PatchType, TextRun, patchDocument } from 'docx';
 import { fieldsForFormating } from './consts';
 import { OverviewIcon } from '~components/Icons';
-import DocumentModal from '~components/DocumentModal/DocumentModal';
 
 const GenerateButton = styled.button`
   padding: 10px 20px;
@@ -38,6 +39,33 @@ function DocumentGenerator({ templateURL, readFields }) {
   const [showModal, setShowModal] = useState(false);
   const [downloadBlob, setDownloadBlob] = useState(null);
 
+  function getCurrentDate() {
+    const today = new Date();
+    return today.toLocaleDateString('sr-RS', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+  }
+
+  function addCustomFields(fields) {
+    const updatedFields = { ...fields };
+    updatedFields['name_1'] = cyrilicToLatin(
+      `${fields['GivenName_1']} ${fields['Surname_1']}`
+    );
+    updatedFields['name_2'] = cyrilicToLatin(
+      `${fields['GivenName_2']} ${fields['Surname_2']}`
+    );
+    updatedFields['IssuingAuthority_1'] = cyrilicToLatin(
+      `${fields['IssuingAuthority_1']}`
+    );
+    updatedFields['IssuingAuthority_2'] = cyrilicToLatin(
+      `${fields['IssuingAuthority_2']}`
+    );
+    updatedFields['date'] = getCurrentDate();
+    return updatedFields;
+  }
+
   function formatField(key, value) {
     const fieldName = key.split('_')[0];
     return fieldsForFormating.includes(fieldName)
@@ -61,8 +89,9 @@ function DocumentGenerator({ templateURL, readFields }) {
 
   const generateAndDisplayDoc = async () => {
     try {
+      const enrichedFields = addCustomFields(readFields);
       const docS3Bytes = await getDocForm(templateURL);
-      const filledBytes = await fillWordDocument(docS3Bytes, readFields);
+      const filledBytes = await fillWordDocument(docS3Bytes, enrichedFields);
       const filledBlob = new Blob([filledBytes], {
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       });
@@ -73,6 +102,7 @@ function DocumentGenerator({ templateURL, readFields }) {
       const result = await Mammoth.convertToHtml({ arrayBuffer });
       setDocContent(result.value);
       setShowModal(true);
+      console.log(readFields);
     } catch (error) {
       console.error('Error generating document:', error);
     }

@@ -3,10 +3,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
   mode: 'production',
+  devtool: 'source-map',
   performance: {
     maxAssetSize: 500000,
     hints: 'warning',
@@ -42,9 +44,6 @@ module.exports = {
     },
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       minify: {
@@ -58,5 +57,9 @@ module.exports = {
       filename: 'css/[name].[contenthash:8].css',
     }),
     new Dotenv(),
+    new CleanWebpackPlugin(),
   ],
+  cache: {
+    type: 'filesystem',
+  },
 };
