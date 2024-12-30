@@ -7,7 +7,6 @@ import IconButton from '@mui/material/IconButton';
 
 const CardContainer = styled.div`
   width: 400px;
-  // max-height: 450px;
   height: 100%;
   padding: 20px;
   border-radius: 4px;
@@ -44,39 +43,6 @@ const DocumentType = styled.div`
   color: ${({ theme }) => theme.palette.grey[500]};
 `;
 
-const InfoRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-size: 1rem;
-  color: ${({ theme }) => theme.palette.text.primary};
-`;
-
-const InfoLabel = styled.div`
-  font-weight: bold;
-  color: ${({ theme }) => theme.palette.text.secondary};
-`;
-
-const AddressContainer = styled.div`
-  background-color: ${({ theme }) => theme.palette.grey[900]};
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-`;
-
-const DeleteIcon = styled.div`
-  cursor: pointer;
-
-  & > svg {
-    width: 24px;
-    height: 24px;
-    fill: ${({ theme }) => theme.palette.error.main};
-
-    &:hover {
-      fill: ${({ theme }) => theme.palette.error.dark};
-    }
-  }
-`;
-
 const StyledIconButton = styled(IconButton)`
   position: relative;
   top: -32px;
@@ -87,12 +53,34 @@ const StyledIconButton = styled(IconButton)`
   }
 `;
 
+const AddressContainer = styled.div`
+  background-color: ${({ theme }) => theme.palette.grey[900]};
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+`;
+
+const Row = styled(({ label, value, className }) => (
+  <div className={className}>
+    <span>{label}:</span>
+    <span>{value}</span>
+  </div>
+))`
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: ${({ theme }) => theme.palette.text.primary};
+
+  span:first-child {
+    font-weight: bold;
+    color: ${({ theme }) => theme.palette.text.secondary};
+  }
+`;
+
 function IDCard({ data, onRemove, order }) {
   if (!data) return null;
 
-
   const getKey = (key) => `${key}_${order}`;
-
   const isMale = data[getKey('Sex')] === 'M';
 
   return (
@@ -105,39 +93,22 @@ function IDCard({ data, onRemove, order }) {
           {data[getKey('DocumentType')] || 'Lična karta'}
         </DocumentType>
         <StyledIconButton onClick={onRemove} aria-label="Delete">
-          <DeleteIcon>
-            <RecycleBinIcon />
-          </DeleteIcon>
+          <RecycleBinIcon />
         </StyledIconButton>
       </Header>
-      <InfoRow>
-        <InfoLabel>Broj lične karte:</InfoLabel>
-        <div>{data[getKey('DocumentNumber')]}</div>
-      </InfoRow>
-      <InfoRow>
-        <InfoLabel>Ime i prezime:</InfoLabel>
-        <div>
-          {data[getKey('GivenName')]} {data[getKey('Surname')]}
-        </div>
-      </InfoRow>
-      <InfoRow>
-        <InfoLabel>Datum rođenja:</InfoLabel>
-        <div>{data[getKey('DateOfBirth')]}</div>
-      </InfoRow>
-      <InfoRow>
-        <InfoLabel>Mesto rođenja:</InfoLabel>
-        <div>{data[getKey('PlaceOfBirth')]}</div>
-      </InfoRow>
-      <InfoRow>
-        <InfoLabel>JMBG:</InfoLabel>
-        <div>{data[getKey('PersonalNumber')]}</div>
-      </InfoRow>
+      <Row label="Broj lične karte" value={data[getKey('DocumentNumber')]} />
+      <Row
+        label="Ime i prezime"
+        value={`${data[getKey('GivenName')]} ${data[getKey('Surname')]}`}
+      />
+      <Row label="Datum rođenja" value={data[getKey('DateOfBirth')]} />
+      <Row label="Mesto rođenja" value={data[getKey('PlaceOfBirth')]} />
+      <Row label="JMBG" value={data[getKey('PersonalNumber')]} />
       <AddressContainer>
-        <InfoLabel>Adresa prebivališta:</InfoLabel>
-        <div>
-          {data[getKey('Street')]} {data[getKey('AddressNumber')]}{' '}
-          {data[getKey('Place')]}
-        </div>
+        <Row
+          label="Adresa prebivališta"
+          value={`${data[getKey('Street')]} ${data[getKey('AddressNumber')]} ${data[getKey('Place')]}`}
+        />
       </AddressContainer>
     </CardContainer>
   );
