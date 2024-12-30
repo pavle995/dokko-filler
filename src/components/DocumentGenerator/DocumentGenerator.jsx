@@ -4,7 +4,6 @@ import Mammoth from 'mammoth';
 import DocumentModal from '~components/DocumentModal/DocumentModal';
 import { addCustomFields, fillWordDocument } from '~utils/documentUtils';
 import { getDocForm, downloadFile } from '~utils/fileDownloader';
-
 import { OverviewIcon } from '~components/Icons';
 
 const GenerateButton = styled.button`
