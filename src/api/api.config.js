@@ -1,0 +1,4 @@
+const API_BASE_URL = window.API_BASE_URL;
+const READER_API_BASE_URL = window.READER_API_BASE_URL;
+
+export { API_BASE_URL, READER_API_BASE_URL };

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Mammoth from 'mammoth';
-import DocumentModal from '~components/DocumentModal/DocumentModal';
-import { addCustomFields, fillWordDocument } from '~utils/documentUtils';
-import { getDocForm, downloadFile } from '~utils/fileDownloader';
-import { OverviewIcon } from '~components/Icons';
+import React, { useState } from "react";
+import styled from "styled-components";
+import Mammoth from "mammoth";
+import DocumentModal from "~components/DocumentModal/DocumentModal";
+import { addCustomFields, fillWordDocument } from "~utils/documentUtils";
+import { getDocForm, downloadFile } from "~utils/fileDownloader";
+import { OverviewIcon } from "~components/Icons";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const GenerateButton = styled.button`
   padding: 10px 20px;
@@ -32,17 +33,19 @@ const StyledOverviewIcon = styled(OverviewIcon)`
 `;
 
 function DocumentGenerator({ templateURL, readFields }) {
-  const [docContent, setDocContent] = useState('');
+  const [docContent, setDocContent] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [downloadBlob, setDownloadBlob] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const generateAndDisplayDoc = async () => {
+    setIsLoading(true);
     try {
       const enrichedFields = addCustomFields(readFields);
       const docS3Bytes = await getDocForm(templateURL);
       const filledBytes = await fillWordDocument(docS3Bytes, enrichedFields);
       const filledBlob = new Blob([filledBytes], {
-        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       });
 
       setDownloadBlob(filledBlob);
@@ -52,7 +55,9 @@ function DocumentGenerator({ templateURL, readFields }) {
       setDocContent(result.value);
       setShowModal(true);
     } catch (error) {
-      console.error('Error generating document:', error);
+      console.error("Error generating document:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -69,9 +74,15 @@ function DocumentGenerator({ templateURL, readFields }) {
 
   return (
     <>
-      <GenerateButton onClick={generateAndDisplayDoc}>
-        <StyledOverviewIcon />
-        Pregledaj dokument
+      <GenerateButton onClick={generateAndDisplayDoc} disabled={isLoading}>
+        {isLoading ? (
+          <CircularProgress size={20} color="inherit" />
+        ) : (
+          <>
+            <StyledOverviewIcon />
+            Pregledaj dokument
+          </>
+        )}
       </GenerateButton>
 
       {showModal && (
@@ -79,6 +90,7 @@ function DocumentGenerator({ templateURL, readFields }) {
           docContent={docContent}
           handleDownload={handleDownload}
           closeModal={closeModal}
+          isLoading={isLoading}
         />
       )}
     </>
