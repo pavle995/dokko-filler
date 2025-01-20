@@ -1,11 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import { CarDocumentIcon } from '~components/Icons';
-import { RecycleBinIcon } from '~components/Icons';
-import IconButton from '@mui/material/IconButton';
+import React from "react";
+import styled from "styled-components";
+import { CarDocumentIcon } from "~components/Icons";
+import { RecycleBinIcon } from "~components/Icons";
+import IconButton from "@mui/material/IconButton";
 
 const CardContainer = styled.div`
   width: 400px;
+  height: 100%;
   padding: 20px;
   border-radius: 4px;
   background-color: ${({ theme }) => theme.palette.lightGrey[700]};
@@ -13,7 +14,7 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 `;
 
 const Header = styled.div`
@@ -41,20 +42,31 @@ const DocumentType = styled.div`
   color: ${({ theme }) => theme.palette.grey[500]};
 `;
 
-const InfoRow = styled.div`
+const StyledIconButton = styled(IconButton)`
+  position: relative;
+  top: -32px;
+  right: -16px;
+  color: ${({ theme }) => theme.palette.error.main};
+  &:hover {
+    color: ${({ theme }) => theme.palette.error.dark};
+  }
+`;
+
+const InfoRow = styled(({ label, value, className }) => (
+  <div className={className}>
+    <span>{label}:</span>
+    <span>{value}</span>
+  </div>
+))`
   display: flex;
   justify-content: space-between;
   font-size: 1rem;
   color: ${({ theme }) => theme.palette.text.primary};
-`;
 
-const InfoLabel = styled.div`
-  font-weight: bold;
-  color: ${({ theme }) => theme.palette.text.secondary};
-`;
-
-const InfoValue = styled.div`
-  color: ${({ theme }) => theme.palette.text.primary};
+  span:first-child {
+    font-weight: bold;
+    color: ${({ theme }) => theme.palette.text.secondary};
+  }
 `;
 
 const VehicleDetailsContainer = styled.div`
@@ -67,59 +79,28 @@ const VehicleDetailsContainer = styled.div`
   gap: 8px;
 `;
 
-const OwnerRow = styled.div`
+const OwnerRow = styled(({ label, value, className }) => (
+  <div className={className}>
+    <span>{label}:</span>
+    <span>{value}</span>
+  </div>
+))`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   font-size: 1rem;
   color: ${({ theme }) => theme.palette.text.primary};
-`;
 
-const OwnerInfo = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-
-const OwnerName = styled.span`
-  font-weight: bold;
-  color: ${({ theme }) => theme.palette.text.secondary};
-`;
-
-const OwnerDetail = styled.span`
-  font-weight: bold;
-  color: ${({ theme }) => theme.palette.text.secondary};
-`;
-
-const OwnerAddress = styled.div`
-  font-size: 0.9rem;
-  color: ${({ theme }) => theme.palette.text.primary};
-`;
-
-const DeleteIcon = styled.div`
-  cursor: pointer;
-
-  & > svg {
-    width: 24px;
-    height: 24px;
-    fill: ${({ theme }) => theme.palette.error.main};
-
-    &:hover {
-      fill: ${({ theme }) => theme.palette.error.dark};
-    }
-  }
-`;
-
-const StyledIconButton = styled(IconButton)`
-  position: relative;
-  top: -32px;
-  right: -16px;
-  color: ${({ theme }) => theme.palette.error.main};
-  &:hover {
-    color: ${({ theme }) => theme.palette.error.dark};
+  span:first-child {
+    font-weight: bold;
+    color: ${({ theme }) => theme.palette.text.secondary};
   }
 `;
 
 function VehicleCardID({ data, onRemove, order }) {
   const getKey = (key) => `${key}_${order}`;
+
+  if (!data) return null;
 
   return (
     <CardContainer>
@@ -129,51 +110,42 @@ function VehicleCardID({ data, onRemove, order }) {
         </ProfileIcon>
         <DocumentType>Saobraćajna dozvola</DocumentType>
         <StyledIconButton onClick={onRemove} aria-label="Delete">
-          <DeleteIcon>
-            <RecycleBinIcon />
-          </DeleteIcon>
+          <RecycleBinIcon />
         </StyledIconButton>
       </Header>
-      <InfoRow>
-        <InfoLabel>Broj registracije:</InfoLabel>
-        <InfoValue>
-          {data[getKey('RegistrationNumberOfVehicle')] || 'N/A'}
-        </InfoValue>
-      </InfoRow>
-      <InfoRow>
-        <InfoLabel>Tip vozila:</InfoLabel>
-        <InfoValue>{data[getKey('VehicleCategory')] || 'N/A'}</InfoValue>
-      </InfoRow>
-      <InfoRow>
-        <InfoLabel>Proizvođač:</InfoLabel>
-        <InfoValue>{data[getKey('VehicleMake')] || 'N/A'}</InfoValue>
-      </InfoRow>
-      <InfoRow>
-        <InfoLabel>Model:</InfoLabel>
-        <InfoValue>{data[getKey('CommercialDescription')] || 'N/A'}</InfoValue>
-      </InfoRow>
-      <InfoRow>
-        <InfoLabel>Godina proizvodnje:</InfoLabel>
-        <InfoValue>{data[getKey('YearOfProduction')] || 'N/A'}</InfoValue>
-      </InfoRow>
-      <InfoRow>
-        <InfoLabel>Zapremina motora:</InfoLabel>
-        <InfoValue>{data[getKey('EngineCapacity')] || 'N/A'}</InfoValue>
-      </InfoRow>
+      <InfoRow
+        label="Broj registracije"
+        value={data[getKey("RegistrationNumberOfVehicle")] || "N/A"}
+      />
+      <InfoRow
+        label="Tip vozila"
+        value={data[getKey("VehicleCategory")] || "N/A"}
+      />
+      <InfoRow
+        label="Proizvođač"
+        value={data[getKey("VehicleMake")] || "N/A"}
+      />
+      <InfoRow
+        label="Model"
+        value={data[getKey("CommercialDescription")] || "N/A"}
+      />
+      <InfoRow
+        label="Godina proizvodnje"
+        value={data[getKey("YearOfProduction")] || "N/A"}
+      />
+      <InfoRow
+        label="Zapremina motora"
+        value={data[getKey("EngineCapacity")] || "N/A"}
+      />
       <VehicleDetailsContainer>
-        <OwnerRow>
-          <InfoLabel>Vlasnik:</InfoLabel>
-          <OwnerInfo>
-            <OwnerName>
-              {data[getKey('OwnersSurnameOrBusinessName')] || 'N/A'}
-            </OwnerName>
-            <OwnerDetail>{data[getKey('OwnerName')] || ''}</OwnerDetail>
-          </OwnerInfo>
-        </OwnerRow>
-        <OwnerRow>
-          <InfoLabel>Adresa:</InfoLabel>
-          <OwnerAddress>{data[getKey('OwnerAddress')] || 'N/A'}</OwnerAddress>
-        </OwnerRow>
+        <OwnerRow
+          label="Vlasnik"
+          value={`${data[getKey("OwnersSurnameOrBusinessName")] || "N/A"} ${data[getKey("OwnerName")] || ""}`}
+        />
+        <OwnerRow
+          label="Adresa"
+          value={data[getKey("OwnerAddress")] || "N/A"}
+        />
       </VehicleDetailsContainer>
     </CardContainer>
   );

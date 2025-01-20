@@ -74,3 +74,17 @@ export const addCustomFields = (fields) => {
 
   return updatedFields;
 };
+
+export const extractPlaceholders = (documentContent, fields) => {
+  const regex = /{{(\w+)_p([1-7])_(\d+)}}/g;
+  const matches = [...documentContent.matchAll(regex)];
+
+  const body = matches.map((match) => ({
+    noun: fields[`${match[1]}_${match[3]}`],
+    case: `p${match[2]}`,
+    apikey: "blokbrateblokbruklinbato",
+    originalPlaceholder: `${match[1]}_p${match[2]}_${match[3]}`,
+  }));
+
+  return body;
+};

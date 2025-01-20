@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import { YoungBusinessmanIcon } from '~components/Icons';
-import { BusinessWomanWithTieIcon } from '~components/Icons';
-import { RecycleBinIcon } from '~components/Icons';
-import IconButton from '@mui/material/IconButton';
+import React from "react";
+import styled from "styled-components";
+import { YoungBusinessmanIcon } from "~components/Icons";
+import { BusinessWomanWithTieIcon } from "~components/Icons";
+import { RecycleBinIcon } from "~components/Icons";
+import IconButton from "@mui/material/IconButton";
 
 const CardContainer = styled.div`
   width: 400px;
@@ -15,7 +15,7 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 `;
 
 const Header = styled.div`
@@ -77,11 +77,29 @@ const Row = styled(({ label, value, className }) => (
   }
 `;
 
+const AdressRow = styled(({ label, value, className }) => (
+  <div className={className}>
+    <span>{label}:</span>
+    <span>{value}</span>
+  </div>
+))`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: ${({ theme }) => theme.palette.text.primary};
+
+  span:first-child {
+    font-weight: bold;
+    color: ${({ theme }) => theme.palette.text.secondary};
+  }
+`;
+
 function IDCard({ data, onRemove, order }) {
   if (!data) return null;
 
   const getKey = (key) => `${key}_${order}`;
-  const isMale = data[getKey('Sex')] === 'M';
+  const isMale = data[getKey("Sex")] === "M";
 
   return (
     <CardContainer>
@@ -90,24 +108,24 @@ function IDCard({ data, onRemove, order }) {
           {isMale ? <YoungBusinessmanIcon /> : <BusinessWomanWithTieIcon />}
         </ProfileIcon>
         <DocumentType>
-          {data[getKey('DocumentType')] || 'Lična karta'}
+          {data[getKey("DocumentType")] || "Lična karta"}
         </DocumentType>
         <StyledIconButton onClick={onRemove} aria-label="Delete">
           <RecycleBinIcon />
         </StyledIconButton>
       </Header>
-      <Row label="Broj lične karte" value={data[getKey('DocumentNumber')]} />
+      <Row label="Broj lične karte" value={data[getKey("DocumentNumber")]} />
       <Row
         label="Ime i prezime"
-        value={`${data[getKey('GivenName')]} ${data[getKey('Surname')]}`}
+        value={`${data[getKey("GivenName")]} ${data[getKey("Surname")]}`}
       />
-      <Row label="Datum rođenja" value={data[getKey('DateOfBirth')]} />
-      <Row label="Mesto rođenja" value={data[getKey('PlaceOfBirth')]} />
-      <Row label="JMBG" value={data[getKey('PersonalNumber')]} />
+      <Row label="Datum rođenja" value={data[getKey("DateOfBirth")]} />
+      <Row label="Mesto rođenja" value={data[getKey("PlaceOfBirth")]} />
+      <Row label="JMBG" value={data[getKey("PersonalNumber")]} />
       <AddressContainer>
-        <Row
+        <AdressRow
           label="Adresa prebivališta"
-          value={`${data[getKey('Street')]} ${data[getKey('AddressNumber')]} ${data[getKey('Place')]}`}
+          value={`${data[getKey("Street")]} ${data[getKey("AddressNumber")]} ${data[getKey("Place")]}`}
         />
       </AddressContainer>
     </CardContainer>

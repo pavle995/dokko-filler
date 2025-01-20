@@ -49,7 +49,7 @@ export const tokens = (mode) => ({
             dark: '#003366',
             contrastText: '#ffffff',
           },
-          secondary: {
+          secundary: {
             light: '#70d8bd',
             main: '#4cceac',
             dark: '#3da58a',
@@ -111,7 +111,7 @@ export const tokens = (mode) => ({
             dark: '#003366',
             contrastText: '#ffffff',
           },
-          secondary: {
+          secundary: {
             light: '#94e2cd',
             main: '#4cceac',
             dark: '#1e5245',
