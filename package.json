@@ -13,10 +13,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-amplify/auth": "^6.9.1",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@mui/material": "^6.1.8",
     "@mui/styled-engine-sc": "^6.1.8",
+    "amazon-cognito-identity-js": "^6.3.12",
+    "aws-amplify": "^6.12.0",
     "axios": "^1.7.8",
     "docx": "^8.5.0",
     "mammoth": "^1.8.0",
