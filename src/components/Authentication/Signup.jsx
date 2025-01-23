@@ -6,6 +6,7 @@ import CustomForm from "~shared-components/CustomForm/CustomForm";
 import CustomButton from "~shared-components/CustomButton/CustomButton";
 import FormWrapper from "~shared-components/shared-styled-components/FormWrapper/FormWrapper";
 import LinkContainer from "~shared-components/shared-styled-components/LinkContainer/LinkContainer";
+import { useNotification } from "~context/NotificationContext";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -14,6 +15,8 @@ function Signup() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const showNotification = useNotification();
 
   const handleSignup = (e) => {
     e.preventDefault();
@@ -55,8 +58,14 @@ function Signup() {
     signUpUtil(email, password)
       .then((res) => console.log(res))
       .catch((err) => {
-        console.error(err);
-        setEmailError("Došlo je do greške prilikom registracije.");
+        console.log(err);
+        if (err) {
+          showNotification(
+            "Došlo je do greške prilikom registracije. Molimo vas pokušajte opet.",
+            5000,
+            "error"
+          );
+        }
       });
   };
 
