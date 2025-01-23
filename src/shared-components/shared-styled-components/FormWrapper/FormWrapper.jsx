@@ -4,9 +4,9 @@ const FormWrapper = styled.div`
   max-width: 400px;
   margin: auto auto;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid ${(props) => props.theme.palette.grey[800]};
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: ${(props) => props.theme.palette.background.paper};
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
