@@ -1,59 +1,90 @@
-import React, { useState } from 'react';
-import { signInUtil } from '../../utils/cognitoAuth';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { signInUtil } from "../../utils/cognitoAuth";
+import CustomTextField from "~shared-components/CustomTextField/CustomTextField";
+import CustomForm from "~shared-components/CustomForm/CustomForm";
+import CustomButton from "~shared-components/CustomButton/CustomButton";
+import FormWrapper from "~shared-components/shared-styled-components/FormWrapper/FormWrapper";
+import LinkContainer from "~shared-components/shared-styled-components/LinkContainer/LinkContainer";
 
-const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-    const handleLogin = (e) => {
-        e.preventDefault();
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
 
-        // Basic validation
-        if (!email || !password) {
-            setError('Both fields are required.');
-            return;
-        }
+    let isValid = true;
 
-        // Simulate login logic
-        console.log('Login attempted with:', { email, password });
-        setError(''); 
+    if (!email) {
+      setEmailError("Email je obavezan.");
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Email nije validan.");
+      isValid = false;
+    }
 
-        signInUtil(email, password).catch((err) => {
-            console.log(err)
-        });
-    };
+    if (!password) {
+      setPasswordError("Lozinka je obavezna.");
+      isValid = false;
+    }
 
-    return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
+    if (!isValid) {
+      return;
+    }
 
-                <div>
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
+    signInUtil(email, password).catch((err) => {
+      console.log(err);
+      setPasswordError("Neispravan email ili lozinka.");
+    });
+  };
 
-                {error && <p>{error}</p>}
+  return (
+    <FormWrapper>
+      <h2>Prijava</h2>
+      <CustomForm onSubmit={handleLogin}>
+        <CustomTextField
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          error={!!emailError}
+          helperText={emailError}
+        />
 
-                <button type="submit">Login</button>
-            </form>
-        </div>
-    );
-};
+        <CustomTextField
+          label="Lozinka"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          error={!!passwordError}
+          helperText={passwordError}
+        />
+
+        <CustomButton
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+        >
+          Prijavi se
+        </CustomButton>
+
+        <LinkContainer>
+          <Link
+            to="/signup"
+            style={{ textDecoration: "none", color: "#1976d2" }}
+          >
+            Nemate nalog? Registrujte se
+          </Link>
+        </LinkContainer>
+      </CustomForm>
+    </FormWrapper>
+  );
+}
 
 export default Login;

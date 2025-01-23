@@ -1,57 +1,116 @@
-import React, { useState } from 'react';
-import { signUpUtil } from '../../utils/cognitoAuth';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { signUpUtil } from "../../utils/cognitoAuth";
+import CustomTextField from "~shared-components/CustomTextField/CustomTextField";
+import CustomForm from "~shared-components/CustomForm/CustomForm";
+import CustomButton from "~shared-components/CustomButton/CustomButton";
+import FormWrapper from "~shared-components/shared-styled-components/FormWrapper/FormWrapper";
+import LinkContainer from "~shared-components/shared-styled-components/LinkContainer/LinkContainer";
 
-const Signup = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+function Signup() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
-    const handleSignup = (e) => {
-        e.preventDefault();
+  const handleSignup = (e) => {
+    e.preventDefault();
 
-        if (!email || !password) {
-            setError('Both fields are required.');
-            return;
-        }
+    setEmailError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
 
-        console.log('Signup attempted with:', { email, password });
-        setError('');
+    let isValid = true;
 
-        signUpUtil(email, password).then(res => console.log(res)).catch((err) => {
-            console.error(err)
-        });
-    };
+    if (!email) {
+      setEmailError("Email je obavezan.");
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Email nije validan.");
+      isValid = false;
+    }
 
-    return (
-        <div>
-            <h2>Signup</h2>
-            <form onSubmit={handleSignup}>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
+    if (!password) {
+      setPasswordError("Lozinka je obavezna.");
+      isValid = false;
+    } else if (password.length < 6) {
+      setPasswordError("Lozinka mora imati najmanje 6 karaktera.");
+      isValid = false;
+    }
 
-                <div>
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
+    if (!confirmPassword) {
+      setConfirmPasswordError("Potvrda lozinke je obavezna.");
+      isValid = false;
+    } else if (password !== confirmPassword) {
+      setConfirmPasswordError("Lozinke se ne podudaraju.");
+      isValid = false;
+    }
 
-                {error && <p>{error}</p>}
+    if (!isValid) {
+      return;
+    }
 
-                <button type="submit">Sign up</button>
-            </form>
-        </div>
-    );
-};
+    signUpUtil(email, password)
+      .then((res) => console.log(res))
+      .catch((err) => {
+        console.error(err);
+        setEmailError("Došlo je do greške prilikom registracije.");
+      });
+  };
+
+  return (
+    <FormWrapper>
+      <h2>Registracija</h2>
+      <CustomForm onSubmit={handleSignup}>
+        <CustomTextField
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          error={!!emailError}
+          helperText={emailError}
+        />
+
+        <CustomTextField
+          label="Lozinka"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          error={!!passwordError}
+          helperText={passwordError}
+        />
+
+        <CustomTextField
+          label="Potvrdi Lozinku"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          error={!!confirmPasswordError}
+          helperText={confirmPasswordError}
+        />
+
+        <CustomButton
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+        >
+          Registruj se
+        </CustomButton>
+
+        <LinkContainer>
+          <Link
+            to="/login"
+            style={{ textDecoration: "none", color: "#1976d2" }}
+          >
+            Već imate nalog? Prijavite se
+          </Link>
+        </LinkContainer>
+      </CustomForm>
+    </FormWrapper>
+  );
+}
 
 export default Signup;

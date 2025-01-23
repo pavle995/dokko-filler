@@ -8,8 +8,11 @@ import HomePage from "~pages/HomePage/HomePage";
 import GenerateDocumentPage from "~pages/GenerateDocumentPage/GenerateDocumentPage";
 import Login from "~components/Authentication/Login";
 import Signup from "~components/Authentication/Signup";
+import PrivateRoute from "~components/PrivateRoute/PrivateRoute";
 
 function Root() {
+  const isAuthenticated = false;
+
   return (
     <Router>
       <Layout>
@@ -17,12 +20,16 @@ function Root() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/documents" element={<DocumentsList />} />
-          <Route
-            path="/documents/create/:name/:id"
-            element={<GenerateDocumentPage />}
-          />
           <Route path="/about" element={<AboutPage />} />
+
+          <Route element={<PrivateRoute isAuthenticated={isAuthenticated} />}>
+            <Route path="/documents" element={<DocumentsList />} />
+            <Route
+              path="/documents/create/:name/:id"
+              element={<GenerateDocumentPage />}
+            />
+          </Route>
+
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Layout>
