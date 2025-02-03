@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signUpUtil } from "../../utils/cognitoAuth";
 import CustomTextField from "~shared-components/CustomTextField/CustomTextField";
 import CustomForm from "~shared-components/CustomForm/CustomForm";
@@ -17,8 +17,9 @@ function Signup() {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const showNotification = useNotification();
+  const navigate = useNavigate();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
     setEmailError("");
@@ -55,18 +56,22 @@ function Signup() {
       return;
     }
 
-    signUpUtil(email, password)
-      .then((res) => console.log(res))
-      .catch((err) => {
-        console.log(err);
-        if (err) {
-          showNotification(
-            "Došlo je do greške prilikom registracije. Molimo vas pokušajte opet.",
-            5000,
-            "error"
-          );
-        }
-      });
+    try {
+      await signUpUtil(email, password);
+      showNotification(
+        "Uspešno ste se registrovali! Možete se sada prijaviti.",
+        3000,
+        "success"
+      );
+      navigate("/documents");
+    } catch (err) {
+      console.log(err);
+      showNotification(
+        "Došlo je do greške prilikom registracije. Molimo vas pokušajte opet.",
+        5000,
+        "error"
+      );
+    }
   };
 
   return (

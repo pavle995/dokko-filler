@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { signInUtil } from "../../utils/cognitoAuth";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { signInUtil, signOutUtil } from "../../utils/cognitoAuth";
 import CustomTextField from "~shared-components/CustomTextField/CustomTextField";
 import CustomForm from "~shared-components/CustomForm/CustomForm";
 import CustomButton from "~shared-components/CustomButton/CustomButton";
@@ -14,8 +14,9 @@ function Login() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const showNotification = useNotification();
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setEmailError("");
     setPasswordError("");
@@ -39,16 +40,18 @@ function Login() {
       return;
     }
 
-    signInUtil(email, password).catch((err) => {
+    try {
+      await signInUtil(email, password);
+      showNotification("Uspešno ste se prijavili!", 3000, "success");
+      navigate("/documents");
+    } catch (err) {
       console.log(err);
-      if (err) {
-        showNotification(
-          "Došlo je do greške prilikom logovanja. Molimo vas pokušajte opet.",
-          5000,
-          "error"
-        );
-      }
-    });
+      showNotification(
+        "Došlo je do greške prilikom logovanja. Molimo vas pokušajte opet.",
+        5000,
+        "error"
+      );
+    }
   };
 
   return (

@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 const FormWrapper = styled.div`
   max-width: 400px;
-  margin: auto auto;
+  width: 100%;
+  margin: 64px auto;
   padding: 20px;
   border: 1px solid ${(props) => props.theme.palette.grey[800]};
   border-radius: 8px;

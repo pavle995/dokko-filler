@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import DocumentItem from '~shared-components/DocumentItem/DocumentItem';
-import useFetch from '~hooks/useFetch';
-import getDocuments from '~api/getDocuments';
-import { useNotification } from '~context/NotificationContext';
-import Loading from '~shared-components/Loading/Loading';
-import ErrorHandler from '~shared-components/ErrorHandler/ErrorHandler';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import DocumentItem from "~shared-components/DocumentItem/DocumentItem";
+import useFetch from "~hooks/useFetch";
+import getDocuments from "~api/getDocuments";
+import { useNotification } from "~context/NotificationContext";
+import Loading from "~shared-components/Loading/Loading";
+import ErrorHandler from "~shared-components/ErrorHandler/ErrorHandler";
 
 const DocumentsContainer = styled.div`
   padding: 20px;
@@ -43,14 +43,16 @@ function DocumentsList() {
   useEffect(() => {
     if (error) {
       showNotification(
-        'Neuspešno učitavanje liste dokumenata. Molimo vas pokušajte opet.',
+        "Neuspešno učitavanje liste dokumenata. Molimo vas pokušajte opet.",
         5000,
-        'error'
+        "error"
       );
     }
   }, [error]);
 
-  if (documents?.length === 0)
+  const documentsList = Array.isArray(documents?.body) ? documents.body : [];
+
+  if (documentsList?.length === 0)
     return (
       <StateContainerWrapper>
         <ErrorHandler message="Lista dokumenata je prazna."></ErrorHandler>
@@ -75,7 +77,7 @@ function DocumentsList() {
     <DocumentsContainer>
       <Title>Ugovori</Title>
       <Wrapper>
-        {documents?.body.map((doc) => (
+        {documents?.body?.map((doc) => (
           <DocumentItem
             key={doc.id}
             name={doc.name}
