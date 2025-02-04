@@ -1,11 +1,11 @@
-import { Amplify } from "aws-amplify";
+import { Amplify } from 'aws-amplify';
 import {
   signIn,
   signUp,
   signOut,
   fetchAuthSession,
   getCurrentUser,
-} from "aws-amplify/auth";
+} from 'aws-amplify/auth';
 
 Amplify.configure({
   Auth: {
@@ -15,14 +15,14 @@ Amplify.configure({
       loginWith: {
         oauth: {
           domain: process.env.REACT_APP_COGNITO_DOMAIN,
-          scopes: ["openid email profile aws.cognito.signin.user.admin"],
-          redirectSignIn: ["http://localhost:3000/", "https://example.com/"],
-          redirectSignOut: ["http://localhost:3000/", "https://example.com/"],
-          responseType: "code",
+          scopes: ['openid email profile aws.cognito.signin.user.admin'],
+          redirectSignIn: ['http://localhost:3000/', 'https://example.com/'],
+          redirectSignOut: ['http://localhost:3000/', 'https://example.com/'],
+          responseType: 'code',
         },
-        username: "false",
-        email: "true",
-        phone: "false",
+        username: 'false',
+        email: 'true',
+        phone: 'false',
       },
     },
   },
@@ -51,7 +51,7 @@ async function getIdTokenUtil() {
     const session = await fetchAuthSession();
     return session.tokens.idToken?.toString();
   } catch (error) {
-    throw new Error("Niste prijavljeni.");
+    throw new Error('Niste prijavljeni.');
   }
 }
 
@@ -60,7 +60,7 @@ async function getCurrentUserUtil() {
     const user = await getCurrentUser();
     return user;
   } catch (error) {
-    throw new Error("Nema prijavljenog korisnika.");
+    throw new Error('Nema prijavljenog korisnika.');
   }
 }
 

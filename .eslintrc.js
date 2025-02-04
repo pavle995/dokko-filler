@@ -1,93 +1,63 @@
 module.exports = {
-  settings: {
-    "import/resolver": {
-      alias: {
-        map: [
-          ["~components", "./src/components"],
-          ["~shared-components", "./src/shared-components"],
-          ["~pages", "./src/pages"],
-          ["~hooks", "./src/hooks"],
-          ["~api", "./src/api"],
-          ["~context", "./src/context"],
-          ["~utils", "./src/utils"],
-        ],
-        extensions: [".js", ".jsx", ".json"],
-      },
-    },
-  },
   env: {
     browser: true,
     es2021: true,
+    node: true, // ✅ Dodato da prepozna process.env
   },
   extends: [
-    "airbnb",
-    "plugin:react/recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:prettier/recommended",
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:jsx-a11y/recommended',
+    'plugin:prettier/recommended',
   ],
-  plugins: ["prettier", "react", "jsx-a11y", "unused-imports"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: "latest",
-    sourceType: "module",
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  plugins: ['react', 'jsx-a11y', 'prettier', 'import'], // ✅ Dodato 'import'
   rules: {
-    "react/jsx-filename-extension": [1, { extensions: [".jsx", ".js"] }],
-    "react/react-in-jsx-scope": "off",
-    quotes: ["error", "single", { avoidEscape: true }],
-    "comma-dangle": ["error", "always-multiline"],
-    "prettier/prettier": [
-      "error",
+    'prettier/prettier': [
+      'warn',
       {
         singleQuote: true,
         semi: true,
-        printWidth: 80,
+        printWidth: 100,
         tabWidth: 2,
-        trailingComma: "es5",
+        trailingComma: 'es5',
         bracketSpacing: true,
-        quoteProps: "consistent",
-        arrowParens: "always",
-        endOfLine: "lf",
+        arrowParens: 'always',
+        endOfLine: 'lf',
       },
     ],
-    "linebreak-style": ["error", "unix"],
-    "import/no-extraneous-dependencies": [
-      {
-        files: ["webpack*.js"],
-        rules: {
-          "import/no-extraneous-dependencies": "off",
-        },
-      },
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/function-component-definition': 'off',
+    'no-console': 'warn',
+    'no-unused-vars': [
+      'warn',
+      { vars: 'all', args: 'after-used', ignoreRestSiblings: true },
     ],
-    camelcase: ["error", { properties: "always" }],
-    "no-multiple-empty-lines": ["error", { max: 1 }],
-    "no-plusplus": "error",
-    "no-console": "error",
-    "no-unused-vars": [
-      "error",
-      { vars: "all", args: "after-used", ignoreRestSiblings: false },
-    ],
-    "unused-imports/no-unused-imports": "error",
-    "no-duplicate-imports": "error",
-    "import/order": [
-      "error",
+    'no-multiple-empty-lines': ['warn', { max: 2 }],
+    'import/no-extraneous-dependencies': 'off',
+    'import/order': [
+      'warn',
       {
         groups: [
-          ["builtin", "external"],
-          "internal",
-          ["parent", "sibling", "index"],
-        ],
-        pathGroups: [
-          {
-            pattern: "@mui/**",
-            group: "external",
-            position: "after",
-          },
+          ['builtin', 'external'],
+          'internal',
+          ['parent', 'sibling', 'index'],
         ],
         alphabetize: {
-          order: "asc",
+          order: 'asc',
           caseInsensitive: true,
         },
       },

@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import ThemeProvider from "~components/ThemeProvider/ThemeProvider";
 import ErrorBoundary from "~components/ErrorBoundary/ErrorBoundary";
-import GlobalStyle from "../utils/GlobalSyile";
 import Root from "~components/Root/Root";
+import ThemeProvider from "~components/ThemeProvider/ThemeProvider";
+import GlobalStyle from "../utils/GlobalSyile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,5 +14,5 @@ root.render(
         <Root />
       </ErrorBoundary>
     </ThemeProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
