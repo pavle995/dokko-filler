@@ -1,10 +1,10 @@
-import axios from "axios";
-import { getIdTokenUtil } from "../utils/cognitoAuth";
+import axios from 'axios';
+import { getIdTokenUtil } from '../utils/cognitoAuth';
 
 const axiosInstance = axios.create({
   baseURL: process.env.API_BASE_URL,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
@@ -14,16 +14,16 @@ axiosInstance.interceptors.request.use(
       const token = await getIdTokenUtil();
 
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `${token}`;
       } else {
-        console.warn("Token nije pronađen, zahtev će biti poslat bez njega.");
+        console.warn('Token nije pronađen, zahtev će biti poslat bez njega.');
       }
     } catch (error) {
-      console.error("Neuspešno dobijanje tokena:", error);
+      console.error('Neuspešno dobijanje tokena:', error);
     }
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 axiosInstance.interceptors.response.use(
@@ -35,48 +35,48 @@ axiosInstance.interceptors.response.use(
         case 400:
           return Promise.reject({
             ...error,
-            message: "Bad Request (400): Please check your input.",
+            message: 'Bad Request (400): Please check your input.',
           });
         case 401:
           return Promise.reject({
             ...error,
             message:
-              "Unauthorized (401): Your session has expired. Please login again.",
+              'Unauthorized (401): Your session has expired. Please login again.',
           });
         case 403:
           return Promise.reject({
             ...error,
             message:
-              "Forbidden (403): You do not have permission to access this resource.",
+              'Forbidden (403): You do not have permission to access this resource.',
           });
         case 404:
           return Promise.reject({
             ...error,
-            message: "Not Found (404): The requested resource was not found.",
+            message: 'Not Found (404): The requested resource was not found.',
           });
         case 500:
           return Promise.reject({
             ...error,
             message:
-              "Internal Server Error (500): Something went wrong on the server.",
+              'Internal Server Error (500): Something went wrong on the server.',
           });
         case 502:
           return Promise.reject({
             ...error,
             message:
-              "Bad Gateway (502): Invalid response from the upstream server.",
+              'Bad Gateway (502): Invalid response from the upstream server.',
           });
         case 503:
           return Promise.reject({
             ...error,
             message:
-              "Service Unavailable (503): The server is temporarily unavailable.",
+              'Service Unavailable (503): The server is temporarily unavailable.',
           });
         case 504:
           return Promise.reject({
             ...error,
             message:
-              "Gateway Timeout (504): The server took too long to respond.",
+              'Gateway Timeout (504): The server took too long to respond.',
           });
         default:
           return Promise.reject({
@@ -87,15 +87,15 @@ axiosInstance.interceptors.response.use(
     } else if (error.request) {
       return Promise.reject({
         ...error,
-        message: "No response received from the server.",
+        message: 'No response received from the server.',
       });
     } else {
       return Promise.reject({
         ...error,
-        message: "Error setting up the request: " + error.message,
+        message: 'Error setting up the request: ' + error.message,
       });
     }
-  },
+  }
 );
 
 export default axiosInstance;

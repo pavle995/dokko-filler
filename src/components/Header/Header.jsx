@@ -1,5 +1,7 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
+import Profile from '~components/Profile/Profile';
+import { useAuth } from '~context/AuthContext'; // Koristi AuthContext
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -18,25 +20,15 @@ const Logo = styled.div`
   color: ${({ theme }) => theme.palette.primary.light};
   text-transform: uppercase;
   letter-spacing: 2px;
-  animation: pulse 2s ease-in-out 3 forwards;
-
-  @keyframes pulse {
-    0%,
-    100% {
-      transform: scale(1);
-      color: ${({ theme }) => theme.palette.primary.contrastText};
-    }
-    50% {
-      transform: scale(1.1);
-      color: ${({ theme }) => theme.palette.primary.light};
-    }
-  }
 `;
 
 function Header() {
+  const { user } = useAuth(); // Proveri da li je korisnik prijavljen
+
   return (
     <HeaderContainer>
       <Logo>dokko filler</Logo>
+      {user && <Profile />} {/* Prikazuje Profile ako je korisnik prijavljen */}
     </HeaderContainer>
   );
 }

@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import Header from "~components/Header/Header";
-import Footer from "~components/Footer/Footer";
-import Sidebar from "~components/Sidebar/Sidebar";
-import { NotificationProvider } from "~context/NotificationContext";
+import React from 'react';
+import styled from 'styled-components';
+import Header from '~components/Header/Header';
+import Footer from '~components/Footer/Footer';
+import Sidebar from '~components/Sidebar/Sidebar';
+import { NotificationProvider } from '~context/NotificationContext';
 
 const FlexContainer = styled.div`
   display: flex;
@@ -25,16 +25,17 @@ const MainContent = styled.div`
 
 function Layout({ children }) {
   return (
-    <FlexContainer>
-      <Header />
-      <MainContent>
-        <Sidebar />
-        <NotificationProvider>
+    <NotificationProvider>
+      <FlexContainer>
+        <Header />
+        <MainContent>
+          <Sidebar />
+
           <Content>{children}</Content>
-        </NotificationProvider>
-      </MainContent>
-      <Footer />
-    </FlexContainer>
+        </MainContent>
+        <Footer />
+      </FlexContainer>
+    </NotificationProvider>
   );
 }
 

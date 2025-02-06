@@ -22,19 +22,20 @@ module.exports = {
       version: 'detect',
     },
   },
-  plugins: ['react', 'jsx-a11y', 'prettier', 'import'], // ✅ Dodato 'import'
+  plugins: ['react', 'jsx-a11y', 'prettier', 'import'],
   rules: {
     'prettier/prettier': [
       'warn',
       {
         singleQuote: true,
+        duubleQuote: false,
         semi: true,
         printWidth: 100,
         tabWidth: 2,
         trailingComma: 'es5',
         bracketSpacing: true,
         arrowParens: 'always',
-        endOfLine: 'lf',
+        endOfLine: 'off',
       },
     ],
     'react/react-in-jsx-scope': 'off',
@@ -56,6 +57,7 @@ module.exports = {
           'internal',
           ['parent', 'sibling', 'index'],
         ],
+        'newlines-between': 'ignore',
         alphabetize: {
           order: 'asc',
           caseInsensitive: true,

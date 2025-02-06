@@ -16,6 +16,7 @@
     "@aws-amplify/auth": "^6.9.1",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
+    "@mui/icons-material": "^6.4.3",
     "@mui/material": "^6.1.8",
     "@mui/styled-engine-sc": "^6.1.8",
     "amazon-cognito-identity-js": "^6.3.12",
