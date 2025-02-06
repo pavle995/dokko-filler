@@ -174,6 +174,7 @@ function GenerateDocumentPage() {
         <DocumentGenerator
           readFields={cardData}
           templateURL={document.body.document_url_docx}
+          letterType={document.body.letter}
         />
       </Header>
       <SubTitleContainer>

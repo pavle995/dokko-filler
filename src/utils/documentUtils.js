@@ -1,6 +1,6 @@
 import { PatchType, TextRun, patchDocument } from 'docx';
 import Mammoth from 'mammoth';
-import { cyrilicToLatin } from 'serbian-script-converter';
+import { cyrilicToLatin, latinToCyrilic } from 'serbian-script-converter';
 import { fieldsForFormating } from './consts';
 
 const getCurrentDate = () => {
@@ -60,9 +60,13 @@ export const getDate = () => {
   return `${day}.${month}.${year}`;
 };
 
-export const addCustomFields = (fields) => {
+export const addCustomFields = (fields, letter) => {
   const updatedFields = Object.entries(fields).reduce((acc, [key, value]) => {
-    acc[key] = typeof value === 'string' ? cyrilicToLatin(value) : value;
+    if (typeof value === 'string') {
+      acc[key] = letter === 1 ? cyrilicToLatin(value) : latinToCyrilic(value);
+    } else {
+      acc[key] = value;
+    }
     return acc;
   }, {});
 

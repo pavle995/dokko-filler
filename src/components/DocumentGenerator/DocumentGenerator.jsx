@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import Mammoth from "mammoth";
-import DocumentModal from "~components/DocumentModal/DocumentModal";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import Mammoth from 'mammoth';
+import DocumentModal from '~components/DocumentModal/DocumentModal';
 import {
   addCustomFields,
   fillWordDocument,
   extractPlaceholders,
-} from "~utils/documentUtils";
-import { getDocForm, downloadFile } from "~utils/fileDownloader";
-import { OverviewIcon } from "~components/Icons";
-import postPlaceholder from "~api/postPlaceholder";
-import CircularProgress from "@mui/material/CircularProgress";
+} from '~utils/documentUtils';
+import { getDocForm, downloadFile } from '~utils/fileDownloader';
+import { OverviewIcon } from '~components/Icons';
+import postPlaceholder from '~api/postPlaceholder';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -62,8 +62,8 @@ const StyledOverviewIcon = styled(OverviewIcon)`
   fill: ${({ theme }) => theme.palette.primary.contrastText};
 `;
 
-function DocumentGenerator({ templateURL, readFields }) {
-  const [docContent, setDocContent] = useState("");
+function DocumentGenerator({ templateURL, readFields, letterType }) {
+  const [docContent, setDocContent] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [downloadBlob, setDownloadBlob] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -81,11 +81,11 @@ function DocumentGenerator({ templateURL, readFields }) {
   const processPlaceholders = async (documentContent, enrichedFields) => {
     const placeholders = extractPlaceholders(
       documentContent.value,
-      enrichedFields,
+      enrichedFields
     );
 
     const transformedFieldsArray = await Promise.all(
-      placeholders.map((placeholder) => postPlaceholder(placeholder)),
+      placeholders.map((placeholder) => postPlaceholder(placeholder))
     );
 
     const transformedFields = Object.assign({}, ...transformedFieldsArray);
@@ -95,26 +95,26 @@ function DocumentGenerator({ templateURL, readFields }) {
   const fillDocumentAndCreateBlob = async (docS3Bytes, enrichedFields) => {
     const filledBytes = await fillWordDocument(docS3Bytes, enrichedFields);
     return new Blob([filledBytes], {
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     });
   };
 
   const generateAndDisplayDoc = async () => {
     setIsLoading(true);
     try {
-      const enrichedFields = addCustomFields(readFields);
+      const enrichedFields = addCustomFields(readFields, letterType);
 
       const { docS3Bytes, documentContent } =
         await fetchAndConvertDocument(templateURL);
 
       const enrichedFieldsWithTransforms = await processPlaceholders(
         documentContent,
-        enrichedFields,
+        enrichedFields
       );
 
       const filledBlob = await fillDocumentAndCreateBlob(
         docS3Bytes,
-        enrichedFieldsWithTransforms,
+        enrichedFieldsWithTransforms
       );
 
       setDownloadBlob(filledBlob);
@@ -124,7 +124,7 @@ function DocumentGenerator({ templateURL, readFields }) {
       setDocContent(result.value);
       setShowModal(true);
     } catch (error) {
-      console.error("Error generating document:", error);
+      console.error('Error generating document:', error);
     } finally {
       setIsLoading(false);
     }
@@ -142,7 +142,7 @@ function DocumentGenerator({ templateURL, readFields }) {
   };
 
   const handleBack = () => {
-    navigate("/documents");
+    navigate('/documents');
   };
 
   return (
@@ -151,7 +151,7 @@ function DocumentGenerator({ templateURL, readFields }) {
         <BackButton onClick={handleBack}>Nazad</BackButton>
         <Button onClick={generateAndDisplayDoc} disabled={isLoading}>
           {isLoading ? (
-            <CircularProgress size={20} color="inherit" />
+            <CircularProgress size={20} color='inherit' />
           ) : (
             <>
               <StyledOverviewIcon />
