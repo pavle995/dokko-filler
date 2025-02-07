@@ -23,8 +23,7 @@ const StyledMyAccountIcon = styled(MyAccountIcon)`
 const StyledSwitchIcon = styled(PowerOffLineIcon)`
   width: 24px;
   height: 24px;
-  margin-left: 40px;
-  fill: ${({ theme }) => theme.palette.grey[100]};
+  fill: ${({ theme }) => theme.palette.error.light};
 `;
 
 const Profile = () => {
@@ -57,8 +56,12 @@ const Profile = () => {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <MenuItem disabled>{user || 'Korisnik'}</MenuItem>
-        <MenuItem onClick={handleLogout}>
+        <MenuItem disabled>Korisnik: {user || 'Korisnik'}</MenuItem>
+        <hr />
+        <MenuItem
+          sx={{ display: 'flex', justifyContent: 'space-between' }}
+          onClick={handleLogout}
+        >
           <span>Odjava</span>
           <StyledSwitchIcon />
         </MenuItem>

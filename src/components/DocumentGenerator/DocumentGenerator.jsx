@@ -62,7 +62,12 @@ const StyledOverviewIcon = styled(OverviewIcon)`
   fill: ${({ theme }) => theme.palette.primary.contrastText};
 `;
 
-function DocumentGenerator({ templateURL, readFields, letterType }) {
+function DocumentGenerator({
+  templateURL,
+  readFields,
+  letterType,
+  documentName,
+}) {
   const [docContent, setDocContent] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [downloadBlob, setDownloadBlob] = useState(null);
@@ -132,7 +137,7 @@ function DocumentGenerator({ templateURL, readFields, letterType }) {
 
   const handleDownload = () => {
     if (downloadBlob) {
-      const fileName = `filled-document.docx`;
+      const fileName = `${documentName}.docx`;
       downloadFile(downloadBlob, fileName);
     }
   };

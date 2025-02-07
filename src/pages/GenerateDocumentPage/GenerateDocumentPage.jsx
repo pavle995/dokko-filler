@@ -1,16 +1,16 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { requiredFieldsMap } from './consts';
 import getDocumentById from '~api/getDocumentById';
-import { useNotification } from '~context/NotificationContext';
-import useFetch from '~hooks/useFetch';
-import ErrorHandler from '~shared-components/ErrorHandler/ErrorHandler';
-import Loading from '~shared-components/Loading/Loading';
-import DocumentRenderer from '~components/DocumentRender/DocumentRender';
-import useLazyFetch from '~hooks/useLazyFetch';
 import read from '~api/read';
 import DocumentGenerator from '~components/DocumentGenerator/DocumentGenerator';
-import { requiredFieldsMap } from './consts';
+import DocumentRenderer from '~components/DocumentRender/DocumentRender';
+import { useNotification } from '~context/NotificationContext';
+import useFetch from '~hooks/useFetch';
+import useLazyFetch from '~hooks/useLazyFetch';
+import ErrorHandler from '~shared-components/ErrorHandler/ErrorHandler';
+import Loading from '~shared-components/Loading/Loading';
 
 const CreateContainer = styled.div`
   display: flex;
@@ -175,6 +175,7 @@ function GenerateDocumentPage() {
           readFields={cardData}
           templateURL={document.body.document_url_docx}
           letterType={document.body.letter}
+          documentName={document.body.name}
         />
       </Header>
       <SubTitleContainer>
