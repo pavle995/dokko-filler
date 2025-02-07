@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [logedIn, setLogedIn] = useState(null);
 
-  // Funkcija koja osvežava korisnika nakon prijave/odjave
   const refreshUser = async () => {
     try {
       const userData = await getCurrentUserUtil();
