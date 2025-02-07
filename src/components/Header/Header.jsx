@@ -23,12 +23,12 @@ const Logo = styled.div`
 `;
 
 function Header() {
-  const { user } = useAuth(); // Proveri da li je korisnik prijavljen
+  const { user } = useAuth();
 
   return (
     <HeaderContainer>
       <Logo>dokko filler</Logo>
-      {user && <Profile />} {/* Prikazuje Profile ako je korisnik prijavljen */}
+      {user && <Profile />}
     </HeaderContainer>
   );
 }

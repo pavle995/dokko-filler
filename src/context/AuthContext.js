@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }) => {
   const refreshUser = async () => {
     try {
       const userData = await getCurrentUserUtil();
-      console.log(userData.signInDetails.loginId);
       setUser(userData.signInDetails.loginId);
     } catch (error) {
       setUser(null);

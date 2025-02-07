@@ -1,11 +1,11 @@
+import { Menu, MenuItem, IconButton } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { signOutUtil } from '../../utils/cognitoAuth';
-import { useNotification } from '~context/NotificationContext';
-import { useAuth } from '~context/AuthContext';
-import { Menu, MenuItem, IconButton } from '@mui/material';
 import { MyAccountIcon, PowerOffLineIcon } from '~components/Icons';
+import { useAuth } from '~context/AuthContext';
+import { useNotification } from '~context/NotificationContext';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ const ProfileContainer = styled.div`
 const StyledMyAccountIcon = styled(MyAccountIcon)`
   width: 32px;
   height: 32px;
-  fill: ${({ theme }) => theme.palette.primary.contrastText};
+  fill: ${({ theme }) => theme.palette.primary.light};
 `;
 
 const StyledSwitchIcon = styled(PowerOffLineIcon)`
