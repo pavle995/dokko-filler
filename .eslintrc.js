@@ -2,7 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    node: true, // ✅ Dodato da prepozna process.env
+    node: true,
   },
   extends: [
     'eslint:recommended',
@@ -35,7 +35,7 @@ module.exports = {
         trailingComma: 'es5',
         bracketSpacing: true,
         arrowParens: 'always',
-        endOfLine: 'off',
+        endOfLine: 'auto',
       },
     ],
     'react/react-in-jsx-scope': 'off',
