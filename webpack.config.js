@@ -1,4 +1,5 @@
 // webpack.config.js
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
@@ -18,12 +19,6 @@ const commonConfig = (env) => {
     context: path.resolve(__dirname, ''),
     devtool: isProd ? 'cheap-module-source-map' : 'source-map',
     entry: './src/index.js',
-    output: {
-      path: path.resolve(__dirname, 'build'),
-      pathinfo: isDev,
-      filename: isProd ? 'js/[name].[contenthash:8].js' : 'js/bundle.js',
-      clean: true,
-    },
     module: {
       strictExportPresence: true,
       rules: [
@@ -39,7 +34,6 @@ const commonConfig = (env) => {
                   {
                     useBuiltIns: 'entry',
                     corejs: 3,
-                    exclude: ['transform-typeof-symbol'],
                   },
                 ],
                 [
@@ -57,21 +51,6 @@ const commonConfig = (env) => {
               ].filter(Boolean),
             },
           },
-        },
-        {
-          test: /\.ico$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: '[name].[ext]',
-              },
-            },
-          ],
-        },
-        {
-          test: /\.(png|jpg|gif|svg)$/iu,
-          type: 'asset/inline',
         },
         {
           test: /\.css$/u,
@@ -117,6 +96,9 @@ const commonConfig = (env) => {
       new WebpackManifestPlugin(),
       new MiniCssExtractPlugin({
         filename: isDev ? 'css/vendors.css' : 'css/[name].[contenthash:8].css',
+      }),
+      new CopyWebpackPlugin({
+        patterns: [{ from: 'public/assets', to: 'assets' }],
       }),
     ],
   };

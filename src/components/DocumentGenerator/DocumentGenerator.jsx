@@ -1,17 +1,18 @@
+import CircularProgress from '@mui/material/CircularProgress';
+import Mammoth from 'mammoth';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Mammoth from 'mammoth';
+import postPlaceholder from '~api/postPlaceholder';
 import DocumentModal from '~components/DocumentModal/DocumentModal';
+import { OverviewIcon } from '~components/Icons';
+import { useNotification } from '~context/NotificationContext';
 import {
   addCustomFields,
   fillWordDocument,
   extractPlaceholders,
 } from '~utils/documentUtils';
 import { getDocForm, downloadFile } from '~utils/fileDownloader';
-import { OverviewIcon } from '~components/Icons';
-import postPlaceholder from '~api/postPlaceholder';
-import CircularProgress from '@mui/material/CircularProgress';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -72,6 +73,8 @@ function DocumentGenerator({
   const [showModal, setShowModal] = useState(false);
   const [downloadBlob, setDownloadBlob] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const showNotification = useNotification();
+
   const navigate = useNavigate();
 
   const fetchAndConvertDocument = async (templateURL) => {
@@ -129,7 +132,11 @@ function DocumentGenerator({
       setDocContent(result.value);
       setShowModal(true);
     } catch (error) {
-      console.error('Error generating document:', error);
+      showNotification(
+        'Došlo je do greške prilikom preuzimanja dokumenta. Molimo vas pokušajte opet.',
+        5000,
+        'error'
+      );
     } finally {
       setIsLoading(false);
     }

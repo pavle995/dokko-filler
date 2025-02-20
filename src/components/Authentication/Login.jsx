@@ -1,14 +1,14 @@
+import CircularProgress from '@mui/material/CircularProgress';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInUtil } from '../../utils/cognitoAuth';
 import { useAuth } from '~context/AuthContext';
 import { useNotification } from '~context/NotificationContext';
 import CustomButton from '~shared-components/CustomButton/CustomButton';
-import CustomTextField from '~shared-components/CustomTextField/CustomTextField';
 import CustomForm from '~shared-components/CustomForm/CustomForm';
+import CustomTextField from '~shared-components/CustomTextField/CustomTextField';
 import FormWrapper from '~shared-components/shared-styled-components/FormWrapper/FormWrapper';
 import LinkContainer from '~shared-components/shared-styled-components/LinkContainer/LinkContainer';
-import CircularProgress from '@mui/material/CircularProgress';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -69,8 +69,8 @@ function Login() {
       <h2>Prijava</h2>
       <CustomForm onSubmit={handleLogin}>
         <CustomTextField
-          label='Email'
-          type='email'
+          label="Email"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           error={!!emailError}
@@ -78,8 +78,8 @@ function Login() {
         />
 
         <CustomTextField
-          label='Lozinka'
-          type='password'
+          label="Lozinka"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           error={!!passwordError}
@@ -87,13 +87,13 @@ function Login() {
         />
 
         <CustomButton
-          type='submit'
+          type="submit"
           fullWidth
-          variant='contained'
-          color='primary'
+          variant="contained"
+          color="primary"
         >
           {isLoading ? (
-            <CircularProgress size={20} color='inherit' />
+            <CircularProgress size={20} color="inherit" />
           ) : (
             'Prijavi se'
           )}
@@ -101,7 +101,7 @@ function Login() {
 
         <LinkContainer>
           <Link
-            to='/signup'
+            to="/signup"
             style={{ textDecoration: 'none', color: '#1976d2' }}
           >
             Nemate nalog? Registrujte se
