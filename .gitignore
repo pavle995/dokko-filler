@@ -12,8 +12,6 @@
 # production
 /dist
 
-.env-cmdrc
-
 # misc
 .DS_Store
 .env.local
