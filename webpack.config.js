@@ -6,11 +6,14 @@ const path = require('path');
 const webpack = require('webpack');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { merge } = require('webpack-merge');
-const developmentConfig = require('./webpack.dev');
 const productionConfig = require('./webpack.prod');
 
 const isProd = Boolean(process.env.NODE_ENV === 'production');
 const isDev = Boolean(process.env.NODE_ENV === 'development');
+
+if (isDev) {
+  const developmentConfig = require('./webpack.dev');
+}
 
 const commonConfig = (env) => {
   return {
