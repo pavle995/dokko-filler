@@ -90,7 +90,7 @@ function HomePage() {
         intuitivno korisničko iskustvo.
       </Description>
       <CTAButton onClick={() => navigate('/documents')}>
-        Pregledaj ugovore
+        Pregledaj Ugovore
       </CTAButton>
     </HomeContainer>
   );
